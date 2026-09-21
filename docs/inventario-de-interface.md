@@ -49,7 +49,7 @@ Não há ilustrações, fontes ou outros arquivos locais nas referências. Robot
 2. Recuperação de senha;
 3. Início — implementada em modo escuro, no fluxo de login normal;
 4. Minhas Cotas — implementada em modo escuro, com filtros locais;
-5. Detalhes da Cota;
+5. Detalhes da Cota — implementada em modo escuro para a cota de imóvel;
 6. Parcelas e Boleto;
 7. Assembleias e Lances;
 8. Serviços, Perfil, Notificações, Configurações e Liberação de Crédito.
