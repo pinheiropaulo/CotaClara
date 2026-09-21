@@ -78,7 +78,15 @@ class _QuotasScreenState extends State<QuotasScreen> {
                       for (var index = 0; index < quotas.length; index++) ...[
                         QuotaOverviewCard(
                           quota: quotas[index],
-                          onPressed: () => _showComingSoon('Detalhes da cota'),
+                          onPressed: () {
+                            if (quotas[index].category ==
+                                QuotaCategory.property) {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.quotaDetails);
+                              return;
+                            }
+                            _showComingSoon('Detalhes desta cota');
+                          },
                         ),
                         if (index < quotas.length - 1)
                           const SizedBox(height: 16),
