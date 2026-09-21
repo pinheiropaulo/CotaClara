@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+
+import '../../app/routes/app_routes.dart';
+import '../../shared/widgets/app_bottom_navigation.dart';
+import 'data/mock_quotas.dart';
+import 'models/quota_overview.dart';
+import 'widgets/assembly_hint.dart';
+import 'widgets/quota_filters.dart';
+import 'widgets/quota_overview_card.dart';
+import 'widgets/quotas_header.dart';
+
+class QuotasScreen extends StatefulWidget {
+  const QuotasScreen({super.key});
+
+  @override
+  State<QuotasScreen> createState() => _QuotasScreenState();
+}
+
+class _QuotasScreenState extends State<QuotasScreen> {
+  QuotaCategory? _selectedCategory;
+
+  List<QuotaOverview> get _visibleQuotas {
+    final category = _selectedCategory;
+    if (category == null) return mockQuotas;
+    return mockQuotas.where((quota) => quota.category == category).toList();
+  }
+
+  void _showComingSoon(String feature) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$feature será implementado em uma próxima etapa.'),
+      ),
+    );
+  }
+
+  void _onDestinationSelected(int index) {
+    if (index == 1) return;
+    if (index == 0) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      return;
+    }
+
+    const destinations = ['Início', 'Cotas', 'Serviços', 'Perfil'];
+    _showComingSoon(destinations[index]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final quotas = _visibleQuotas;
+
+    return Scaffold(
+      bottomNavigationBar: AppBottomNavigation(
+        currentIndex: 1,
+        onDestinationSelected: _onDestinationSelected,
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 430),
+            child: ListView(
+              padding: const EdgeInsets.only(bottom: 24),
+              children: [
+                QuotasHeader(
+                  onNotificationsPressed: () => _showComingSoon('Notificações'),
+                ),
+                QuotaFilters(
+                  selectedCategory: _selectedCategory,
+                  onCategorySelected: (category) {
+                    setState(() => _selectedCategory = category);
+                  },
+                  onFilterPressed: () => _showComingSoon('Filtros avançados'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      for (var index = 0; index < quotas.length; index++) ...[
+                        QuotaOverviewCard(
+                          quota: quotas[index],
+                          onPressed: () => _showComingSoon('Detalhes da cota'),
+                        ),
+                        if (index < quotas.length - 1)
+                          const SizedBox(height: 16),
+                      ],
+                      const SizedBox(height: 12),
+                      AssemblyHint(
+                        onPressed: () => _showComingSoon('Assembleias'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
