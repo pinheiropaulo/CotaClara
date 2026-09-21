@@ -47,8 +47,8 @@ Não há ilustrações, fontes ou outros arquivos locais nas referências. Robot
 
 1. Login — implementada nesta etapa;
 2. Recuperação de senha;
-3. Início;
-4. Minhas Cotas;
+3. Início — implementada em modo escuro, no fluxo de login normal;
+4. Minhas Cotas — implementada em modo escuro, com filtros locais;
 5. Detalhes da Cota;
 6. Parcelas e Boleto;
 7. Assembleias e Lances;
