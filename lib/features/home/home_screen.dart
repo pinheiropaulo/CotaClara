@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/routes/app_routes.dart';
 import '../../shared/widgets/app_bottom_navigation.dart';
@@ -28,7 +29,7 @@ class HomeScreen extends StatelessWidget {
         onDestinationSelected: (index) {
           if (index == 0) return;
           if (index == 1) {
-            Navigator.of(context).pushReplacementNamed(AppRoutes.quotas);
+            context.go(AppRoutes.quotas);
             return;
           }
           const destinations = ['Início', 'Cotas', 'Serviços', 'Perfil'];

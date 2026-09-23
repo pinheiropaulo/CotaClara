@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../app/routes/app_navigation.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/theme/app_colors.dart';
 import 'data/mock_installments.dart';
@@ -44,7 +46,7 @@ class _InstallmentsScreenState extends State<InstallmentsScreen> {
             child: Column(
               children: [
                 InstallmentsTopBar(
-                  onBackPressed: () => Navigator.of(context).pop(),
+                  onBackPressed: () => context.goBackOr(AppRoutes.quotaDetails),
                   onHelpPressed: () => _showComingSoon('Ajuda com parcelas'),
                 ),
                 Expanded(
@@ -58,10 +60,8 @@ class _InstallmentsScreenState extends State<InstallmentsScreen> {
                       const InstallmentPlanSummary(),
                       const SizedBox(height: 24),
                       NextInstallmentHighlight(
-                        onPayPressed: () =>
-                            Navigator.of(context).pushNamed(AppRoutes.bill),
-                        onDetailsPressed: () =>
-                            Navigator.of(context).pushNamed(AppRoutes.bill),
+                        onPayPressed: () => context.push(AppRoutes.bill),
+                        onDetailsPressed: () => context.push(AppRoutes.bill),
                       ),
                       const SizedBox(height: 24),
                       InstallmentFilters(
@@ -86,7 +86,7 @@ class _InstallmentsScreenState extends State<InstallmentsScreen> {
                             onPressed: () {
                               if (installments[index].status ==
                                   InstallmentStatus.pending) {
-                                Navigator.of(context).pushNamed(AppRoutes.bill);
+                                context.push(AppRoutes.bill);
                                 return;
                               }
                               _showComingSoon(

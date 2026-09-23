@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../shared/widgets/app_action_button.dart';
 import '../../../shared/widgets/app_text_form_field.dart';
@@ -29,7 +30,7 @@ class _LoginFormState extends State<LoginForm> {
   void _login() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+    context.replace(AppRoutes.home);
   }
 
   void _simulateBiometrics() {

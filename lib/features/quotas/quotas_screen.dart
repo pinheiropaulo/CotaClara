@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/routes/app_routes.dart';
 import '../../shared/widgets/app_bottom_navigation.dart';
@@ -37,7 +38,7 @@ class _QuotasScreenState extends State<QuotasScreen> {
   void _onDestinationSelected(int index) {
     if (index == 1) return;
     if (index == 0) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      context.go(AppRoutes.home);
       return;
     }
 
@@ -83,15 +84,12 @@ class _QuotasScreenState extends State<QuotasScreen> {
                           onPressed: () {
                             if (quotas[index].category ==
                                 QuotaCategory.property) {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoutes.quotaDetails);
+                              context.push(AppRoutes.quotaDetails);
                               return;
                             }
                             if (quotas[index].category ==
                                 QuotaCategory.vehicle) {
-                              Navigator.of(context).pushNamed(
-                                AppRoutes.vehicleQuotaDetails,
-                              );
+                              context.push(AppRoutes.vehicleQuotaDetails);
                               return;
                             }
                             _showComingSoon('Detalhes desta cota');

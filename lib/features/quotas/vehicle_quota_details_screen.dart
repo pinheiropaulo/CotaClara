@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../app/routes/app_navigation.dart';
 import '../../app/routes/app_routes.dart';
 import '../../shared/widgets/app_bottom_navigation.dart';
 import 'widgets/details/assembly_detail_card.dart';
@@ -29,14 +31,11 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
 
   void _onDestinationSelected(BuildContext context, int index) {
     if (index == 1) {
-      Navigator.of(context).pop();
+      context.go(AppRoutes.quotas);
       return;
     }
     if (index == 0) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRoutes.home,
-        (route) => false,
-      );
+      context.go(AppRoutes.home);
       return;
     }
 
@@ -60,7 +59,7 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 QuotaDetailsTopBar(
-                  onBackPressed: () => Navigator.of(context).pop(),
+                  onBackPressed: () => context.goBackOr(AppRoutes.quotas),
                   onHelpPressed: () => showQuotaHelpSheet(
                     context,
                     onOptionSelected: (option) =>

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../app/routes/app_navigation.dart';
+import '../../app/routes/app_routes.dart';
 import 'data/mock_bill.dart';
 import 'widgets/bill_code_card.dart';
 import 'widgets/bill_notices.dart';
@@ -34,7 +36,7 @@ class BillScreen extends StatelessWidget {
             child: Column(
               children: [
                 BillTopBar(
-                  onBackPressed: () => Navigator.of(context).pop(),
+                  onBackPressed: () => context.goBackOr(AppRoutes.installments),
                   onHelpPressed: () => _showMessage(
                     context,
                     'Ajuda do boleto será implementada em uma próxima etapa.',
