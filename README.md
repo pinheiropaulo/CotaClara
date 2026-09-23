@@ -68,11 +68,17 @@ As versões em tema escuro preservam conteúdo, estrutura, espaçamentos e açõ
 
 ## Executar o projeto
 
-Pré-requisitos: Flutter SDK compatível com Dart `^3.13.3` e um emulador ou dispositivo Android configurado.
+Pré-requisitos: Flutter SDK compatível com Dart `^3.13.3` e um emulador, dispositivo Android ou navegador Chrome configurado.
 
 ```bash
 flutter pub get
 flutter run
+```
+
+Para executar a versão web:
+
+```bash
+flutter run -d chrome
 ```
 
 Para verificar a qualidade estática do código:
@@ -80,6 +86,12 @@ Para verificar a qualidade estática do código:
 ```bash
 flutter analyze
 ```
+
+## Publicação web
+
+O projeto possui configuração para gerar a versão Flutter Web e publicá-la no Firebase Hosting. O Firebase é utilizado somente como hospedagem dos arquivos estáticos e não altera o escopo local e simulado do protótipo.
+
+O processo completo de configuração, build e publicação está documentado em [docs/publicacao-web.md](docs/publicacao-web.md).
 
 ## Organização prevista
 
@@ -91,4 +103,5 @@ A estrutura sugerida para separar dados simulados, tema, componentes reutilizáv
 - [Fluxo de acesso restrito](docs/acesso-restrito.md)
 - [Organização prevista do projeto](docs/organizacao-do-projeto.md)
 - [Inventário de componentes e assets](docs/inventario-de-interface.md)
+- [Publicação da versão web](docs/publicacao-web.md)
 - [Flutter documentation](https://docs.flutter.dev/)
