@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class BidDetailCard extends StatelessWidget {
-  const BidDetailCard({required this.onPressed, super.key});
+  const BidDetailCard({
+    required this.onPressed,
+    this.deadline = 'Prazo até 24 de setembro, às 18h',
+    this.deadlineOnTrailing = false,
+    super.key,
+  });
 
   final VoidCallback onPressed;
+  final String deadline;
+  final bool deadlineOnTrailing;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +25,16 @@ class BidDetailCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _BidIcon(),
-              SizedBox(width: 14),
+              const _BidIcon(),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Lance',
                       style: TextStyle(
                         color: AppColors.textPrimary,
@@ -35,7 +42,7 @@ class BidDetailCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Nenhum lance ativo',
                       style: TextStyle(
                         color: AppColors.textPrimary,
@@ -43,17 +50,32 @@ class BidDetailCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 2),
-                    Text(
-                      'Prazo até 24 de setembro, às 18h',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
+                    if (!deadlineOnTrailing) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        deadline,
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
+              if (deadlineOnTrailing)
+                SizedBox(
+                  width: 112,
+                  child: Text(
+                    deadline,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: 16),

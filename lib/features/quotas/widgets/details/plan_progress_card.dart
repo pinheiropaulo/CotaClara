@@ -3,7 +3,20 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class PlanProgressCard extends StatelessWidget {
-  const PlanProgressCard({super.key});
+  const PlanProgressCard({
+    this.headline = '42 de 180 parcelas',
+    this.progressLabel = '23% concluído',
+    this.progress = 0.23,
+    this.paidValue = 'Valor pago: R\$ 19.840,00',
+    this.remaining = 'Restam 138 parcelas',
+    super.key,
+  });
+
+  final String headline;
+  final String progressLabel;
+  final double progress;
+  final String paidValue;
+  final String remaining;
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +27,10 @@ class PlanProgressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Progresso do plano',
             style: TextStyle(
               color: AppColors.textPrimary,
@@ -25,47 +38,47 @@ class PlanProgressCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
           Row(
             children: [
               Expanded(
                 child: Text(
-                  '42 de 180 parcelas',
-                  style: TextStyle(
+                  headline,
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              _ProgressBadge(),
+              _ProgressBadge(label: progressLabel),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(99)),
+            borderRadius: const BorderRadius.all(Radius.circular(99)),
             child: LinearProgressIndicator(
-              value: 0.23,
+              value: progress,
               minHeight: 10,
               color: AppColors.primary,
               backgroundColor: AppColors.border,
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: Text(
-                  'Valor pago: R\$ 19.840,00',
-                  style: TextStyle(
+                  paidValue,
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 13,
                   ),
                 ),
               ),
               Text(
-                'Restam 138 parcelas',
-                style: TextStyle(
+                remaining,
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
                 ),
@@ -79,20 +92,22 @@ class PlanProgressCard extends StatelessWidget {
 }
 
 class _ProgressBadge extends StatelessWidget {
-  const _ProgressBadge();
+  const _ProgressBadge({required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.successContainer,
         borderRadius: BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         child: Text(
-          '23% concluído',
-          style: TextStyle(
+          label,
+          style: const TextStyle(
             color: AppColors.success,
             fontSize: 12,
             fontWeight: FontWeight.w600,

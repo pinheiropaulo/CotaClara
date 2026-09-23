@@ -4,9 +4,22 @@ import '../../../../app/theme/app_colors.dart';
 import 'credit_update_parts.dart';
 
 class CreditUpdateCard extends StatelessWidget {
-  const CreditUpdateCard({required this.onInfoPressed, super.key});
+  const CreditUpdateCard({
+    required this.onInfoPressed,
+    this.growth = '+5,35%',
+    this.contractedValue = 'R\$ 80.000,00',
+    this.currentValue = 'R\$ 84.280,00',
+    this.accumulatedValue = '+ R\$ 4.280,00',
+    this.lastUpdate = '1 de setembro de 2026',
+    super.key,
+  });
 
   final VoidCallback onInfoPressed;
+  final String growth;
+  final String contractedValue;
+  final String currentValue;
+  final String accumulatedValue;
+  final String lastUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +53,23 @@ class CreditUpdateCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              const CreditGrowthBadge(),
+              CreditGrowthBadge(value: growth),
             ],
           ),
           const SizedBox(height: 12),
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: CreditUpdateValueBox(
                   label: 'Valor contratado',
-                  value: 'R\$ 80.000,00',
+                  value: contractedValue,
                 ),
               ),
               SizedBox(width: 12),
               Expanded(
                 child: CreditUpdateValueBox(
                   label: 'Valor atual da carta',
-                  value: 'R\$ 84.280,00',
+                  value: currentValue,
                   highlighted: true,
                 ),
               ),
@@ -66,7 +79,7 @@ class CreditUpdateCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 14),
             child: Divider(height: 1, color: AppColors.border),
           ),
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: Text(
@@ -78,8 +91,8 @@ class CreditUpdateCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '+ R\$ 4.280,00',
-                style: TextStyle(
+                accumulatedValue,
+                style: const TextStyle(
                   color: AppColors.success,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -88,7 +101,7 @@ class CreditUpdateCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: Text(
@@ -100,8 +113,8 @@ class CreditUpdateCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '1 de setembro de 2026',
-                style: TextStyle(
+                lastUpdate,
+                style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,

@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class CreditValueCard extends StatefulWidget {
-  const CreditValueCard({super.key});
+  const CreditValueCard({
+    this.currentValue = 'R\$ 84.280,00',
+    this.contractedValue = 'R\$ 80.000,00',
+    this.duration = '180 meses',
+    super.key,
+  });
+
+  final String currentValue;
+  final String contractedValue;
+  final String duration;
 
   @override
   State<CreditValueCard> createState() => _CreditValueCardState();
@@ -53,7 +62,7 @@ class _CreditValueCardState extends State<CreditValueCard> {
           ),
           const SizedBox(height: 8),
           Text(
-            _showValue ? 'R\$ 84.280,00' : 'R\$ ••••••••',
+            _showValue ? widget.currentValue : 'R\$ ••••••••',
             style: const TextStyle(
               color: AppColors.textPrimary,
               fontSize: 32,
@@ -63,15 +72,15 @@ class _CreditValueCardState extends State<CreditValueCard> {
           const SizedBox(height: 16),
           const Divider(height: 1, color: Color(0x338DBDDC)),
           const SizedBox(height: 12),
-          const Wrap(
+          Wrap(
             spacing: 18,
             runSpacing: 8,
             children: [
               _CardDetail(
                 icon: Icons.description_outlined,
-                label: 'Valor contratado: R\$ 80.000,00',
+                label: 'Valor contratado: ${widget.contractedValue}',
               ),
-              _CardDetail(icon: Icons.schedule, label: '180 meses'),
+              _CardDetail(icon: Icons.schedule, label: widget.duration),
             ],
           ),
         ],

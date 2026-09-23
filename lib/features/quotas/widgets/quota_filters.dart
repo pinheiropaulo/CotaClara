@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../models/quota_overview.dart';
+import '../models/quota_summary.dart';
 
 class QuotaFilters extends StatelessWidget {
   const QuotaFilters({
+    required this.summary,
     required this.selectedCategory,
     required this.onCategorySelected,
     required this.onFilterPressed,
@@ -12,6 +14,7 @@ class QuotaFilters extends StatelessWidget {
   });
 
   final QuotaCategory? selectedCategory;
+  final QuotaSummary summary;
   final ValueChanged<QuotaCategory?> onCategorySelected;
   final VoidCallback onFilterPressed;
 
@@ -32,16 +35,19 @@ class QuotaFilters extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.border),
                 ),
-                child: const Text(
-                  '3',
-                  style: TextStyle(color: AppColors.accentBlue, fontSize: 12),
+                child: Text(
+                  '${summary.total}',
+                  style: const TextStyle(
+                    color: AppColors.accentBlue,
+                    fontSize: 12,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  '3 cotas ativas',
-                  style: TextStyle(
+                  summary.description,
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
                   ),

@@ -3,25 +3,27 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class CreditGrowthBadge extends StatelessWidget {
-  const CreditGrowthBadge({super.key});
+  const CreditGrowthBadge({this.value = '+5,35%', super.key});
+
+  final String value;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.successContainer,
         borderRadius: BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.trending_up, color: AppColors.success, size: 16),
-            SizedBox(width: 3),
+            const Icon(Icons.trending_up, color: AppColors.success, size: 16),
+            const SizedBox(width: 3),
             Text(
-              '+5,35%',
-              style: TextStyle(
+              value,
+              style: const TextStyle(
                 color: AppColors.success,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,

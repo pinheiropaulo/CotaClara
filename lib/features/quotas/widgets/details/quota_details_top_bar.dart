@@ -6,11 +6,13 @@ class QuotaDetailsTopBar extends StatelessWidget {
   const QuotaDetailsTopBar({
     required this.onBackPressed,
     required this.onMorePressed,
+    this.onHelpPressed,
     super.key,
   });
 
   final VoidCallback onBackPressed;
   final VoidCallback onMorePressed;
+  final VoidCallback? onHelpPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,19 @@ class QuotaDetailsTopBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          IconButton(
-            tooltip: 'Voltar',
-            onPressed: onBackPressed,
-            icon: const Icon(Icons.arrow_back, color: AppColors.accentBlue),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                tooltip: 'Voltar',
+                onPressed: onBackPressed,
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: AppColors.accentBlue,
+                ),
+              ),
+              if (onHelpPressed != null) const SizedBox(width: 48),
+            ],
           ),
           const Expanded(
             child: Text(
@@ -38,10 +49,27 @@ class QuotaDetailsTopBar extends StatelessWidget {
               ),
             ),
           ),
-          IconButton(
-            tooltip: 'Mais opções',
-            onPressed: onMorePressed,
-            icon: const Icon(Icons.more_vert, color: AppColors.accentBlue),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (onHelpPressed != null)
+                IconButton(
+                  tooltip: 'Ajuda',
+                  onPressed: onHelpPressed,
+                  icon: const Icon(
+                    Icons.help_outline,
+                    color: AppColors.accentBlue,
+                  ),
+                ),
+              IconButton(
+                tooltip: 'Mais opções',
+                onPressed: onMorePressed,
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppColors.accentBlue,
+                ),
+              ),
+            ],
           ),
         ],
       ),

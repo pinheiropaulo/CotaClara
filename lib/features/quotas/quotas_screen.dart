@@ -4,6 +4,7 @@ import '../../app/routes/app_routes.dart';
 import '../../shared/widgets/app_bottom_navigation.dart';
 import 'data/mock_quotas.dart';
 import 'models/quota_overview.dart';
+import 'models/quota_summary.dart';
 import 'widgets/assembly_hint.dart';
 import 'widgets/quota_filters.dart';
 import 'widgets/quota_overview_card.dart';
@@ -65,6 +66,7 @@ class _QuotasScreenState extends State<QuotasScreen> {
                   onNotificationsPressed: () => _showComingSoon('Notificações'),
                 ),
                 QuotaFilters(
+                  summary: QuotaSummary.fromQuotas(quotas),
                   selectedCategory: _selectedCategory,
                   onCategorySelected: (category) {
                     setState(() => _selectedCategory = category);
@@ -83,6 +85,13 @@ class _QuotasScreenState extends State<QuotasScreen> {
                                 QuotaCategory.property) {
                               Navigator.of(context)
                                   .pushNamed(AppRoutes.quotaDetails);
+                              return;
+                            }
+                            if (quotas[index].category ==
+                                QuotaCategory.vehicle) {
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.vehicleQuotaDetails,
+                              );
                               return;
                             }
                             _showComingSoon('Detalhes desta cota');

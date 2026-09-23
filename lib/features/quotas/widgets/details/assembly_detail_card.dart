@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class AssemblyDetailCard extends StatelessWidget {
-  const AssemblyDetailCard({required this.onPressed, super.key});
+  const AssemblyDetailCard({
+    required this.onPressed,
+    this.date = '25 de setembro • 19h',
+    super.key,
+  });
 
   final VoidCallback onPressed;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
     return _SurfaceTile(
       icon: Icons.calendar_month_outlined,
       title: 'Próxima assembleia',
-      subtitle: '25 de setembro • 19h',
+      subtitle: date,
       trailing: TextButton(
         onPressed: onPressed,
         child: const Row(
