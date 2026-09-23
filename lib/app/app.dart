@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../features/auth/login_screen.dart';
+import '../features/billing/bill_screen.dart';
 import '../features/home/home_screen.dart';
+import '../features/installments/installments_screen.dart';
 import '../features/quotas/quotas_screen.dart';
 import '../features/quotas/quota_details_screen.dart';
 import '../features/quotas/vehicle_quota_details_screen.dart';
@@ -23,6 +25,8 @@ class CotaClaraApp extends StatelessWidget {
       AppRoutes.quotas: (_) => const QuotasScreen(),
       AppRoutes.quotaDetails: (_) => const QuotaDetailsScreen(),
       AppRoutes.vehicleQuotaDetails: (_) => const VehicleQuotaDetailsScreen(),
+      AppRoutes.installments: (_) => const InstallmentsScreen(),
+      AppRoutes.bill: (_) => const BillScreen(),
     },
   );
 }

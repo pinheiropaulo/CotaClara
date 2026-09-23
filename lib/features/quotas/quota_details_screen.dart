@@ -75,9 +75,11 @@ class QuotaDetailsScreen extends StatelessWidget {
                       const PlanProgressCard(),
                       const SizedBox(height: 16),
                       DetailInstallmentCard(
-                        onPayPressed: () => _showComingSoon(context, 'Boleto'),
-                        onViewAllPressed: () =>
-                            _showComingSoon(context, 'Parcelas'),
+                        onPayPressed: () =>
+                            Navigator.of(context).pushNamed(AppRoutes.bill),
+                        onViewAllPressed: () => Navigator.of(context).pushNamed(
+                          AppRoutes.installments,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       AssemblyDetailCard(

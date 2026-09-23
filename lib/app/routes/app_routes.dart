@@ -4,4 +4,6 @@ abstract final class AppRoutes {
   static const quotas = '/quotas';
   static const quotaDetails = '/quota-details';
   static const vehicleQuotaDetails = '/vehicle-quota-details';
+  static const installments = '/installments';
+  static const bill = '/bill';
 }
