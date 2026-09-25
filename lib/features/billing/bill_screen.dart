@@ -1,15 +1,14 @@
+import 'package:cota_clara/app/routes/app_navigation.dart';
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/features/billing/data/mock_bill.dart';
+import 'package:cota_clara/features/billing/widgets/bill_code_card.dart';
+import 'package:cota_clara/features/billing/widgets/bill_notices.dart';
+import 'package:cota_clara/features/billing/widgets/bill_quota_card.dart';
+import 'package:cota_clara/features/billing/widgets/bill_secondary_actions.dart';
+import 'package:cota_clara/features/billing/widgets/bill_summary_card.dart';
+import 'package:cota_clara/shared/widgets/app_task_top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../app/routes/app_navigation.dart';
-import '../../app/routes/app_routes.dart';
-import 'data/mock_bill.dart';
-import 'widgets/bill_code_card.dart';
-import 'widgets/bill_notices.dart';
-import 'widgets/bill_quota_card.dart';
-import 'widgets/bill_secondary_actions.dart';
-import 'widgets/bill_summary_card.dart';
-import 'widgets/bill_top_bar.dart';
 
 class BillScreen extends StatelessWidget {
   const BillScreen({super.key});
@@ -35,12 +34,14 @@ class BillScreen extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 430),
             child: Column(
               children: [
-                BillTopBar(
+                AppTaskTopBar(
+                  title: 'Boleto da parcela',
                   onBackPressed: () => context.goBackOr(AppRoutes.installments),
                   onHelpPressed: () => _showMessage(
                     context,
                     'Ajuda do boleto será implementada em uma próxima etapa.',
                   ),
+                  helpTooltip: 'Ajuda com boleto',
                 ),
                 Expanded(
                   child: ListView(

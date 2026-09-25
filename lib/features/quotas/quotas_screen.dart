@@ -1,15 +1,14 @@
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
+import 'package:cota_clara/features/quotas/models/quota_summary.dart';
+import 'package:cota_clara/features/quotas/widgets/assembly_hint.dart';
+import 'package:cota_clara/features/quotas/widgets/quota_filters.dart';
+import 'package:cota_clara/features/quotas/widgets/quota_overview_card.dart';
+import 'package:cota_clara/features/quotas/widgets/quotas_header.dart';
+import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../app/routes/app_routes.dart';
-import '../../shared/widgets/app_bottom_navigation.dart';
-import 'data/mock_quotas.dart';
-import 'models/quota_overview.dart';
-import 'models/quota_summary.dart';
-import 'widgets/assembly_hint.dart';
-import 'widgets/quota_filters.dart';
-import 'widgets/quota_overview_card.dart';
-import 'widgets/quotas_header.dart';
 
 class QuotasScreen extends StatefulWidget {
   const QuotasScreen({super.key});
@@ -100,7 +99,7 @@ class _QuotasScreenState extends State<QuotasScreen> {
                       ],
                       const SizedBox(height: 12),
                       AssemblyHint(
-                        onPressed: () => _showComingSoon('Assembleias'),
+                        onPressed: () => context.push(AppRoutes.assemblies),
                       ),
                     ],
                   ),

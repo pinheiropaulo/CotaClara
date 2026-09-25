@@ -1,4 +1,4 @@
-import '../models/installment.dart';
+import 'package:cota_clara/features/installments/models/installment.dart';
 
 const mockInstallments = [
   Installment(

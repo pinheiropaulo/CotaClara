@@ -1,7 +1,6 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/billing/models/bill.dart';
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import '../models/bill.dart';
 
 class BillSummaryCard extends StatelessWidget {
   const BillSummaryCard({required this.bill, super.key});

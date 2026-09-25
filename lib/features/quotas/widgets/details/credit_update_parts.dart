@@ -1,6 +1,5 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app/theme/app_colors.dart';
 
 class CreditGrowthBadge extends StatelessWidget {
   const CreditGrowthBadge({this.value = '+5,35%', super.key});

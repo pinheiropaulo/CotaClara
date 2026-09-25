@@ -1,9 +1,8 @@
+import 'package:cota_clara/features/auth/widgets/login_brand_header.dart';
+import 'package:cota_clara/features/auth/widgets/login_footer.dart';
+import 'package:cota_clara/features/auth/widgets/login_form.dart';
+import 'package:cota_clara/features/auth/widgets/login_introduction.dart';
 import 'package:flutter/material.dart';
-
-import 'widgets/login_brand_header.dart';
-import 'widgets/login_footer.dart';
-import 'widgets/login_form.dart';
-import 'widgets/login_introduction.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

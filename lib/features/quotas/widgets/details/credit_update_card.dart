@@ -1,7 +1,6 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_update_parts.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app/theme/app_colors.dart';
-import 'credit_update_parts.dart';
 
 class CreditUpdateCard extends StatelessWidget {
   const CreditUpdateCard({

@@ -1,7 +1,6 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/installments/models/installment.dart';
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import '../models/installment.dart';
 
 class InstallmentFilters extends StatelessWidget {
   const InstallmentFilters({

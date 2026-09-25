@@ -1,11 +1,10 @@
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/features/auth/formatters/document_input_formatter.dart';
+import 'package:cota_clara/features/auth/validation/login_validators.dart';
+import 'package:cota_clara/shared/widgets/app_action_button.dart';
+import 'package:cota_clara/shared/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../shared/widgets/app_action_button.dart';
-import '../../../shared/widgets/app_text_form_field.dart';
-import '../../../app/routes/app_routes.dart';
-import '../formatters/document_input_formatter.dart';
-import '../validation/login_validators.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});

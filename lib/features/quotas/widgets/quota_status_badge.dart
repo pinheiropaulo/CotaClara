@@ -1,7 +1,6 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import '../models/quota_overview.dart';
 
 class QuotaStatusBadge extends StatelessWidget {
   const QuotaStatusBadge({required this.status, super.key});

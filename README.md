@@ -103,5 +103,6 @@ A estrutura sugerida para separar dados simulados, tema, componentes reutilizáv
 - [Fluxo de acesso restrito](docs/acesso-restrito.md)
 - [Organização prevista do projeto](docs/organizacao-do-projeto.md)
 - [Inventário de componentes e assets](docs/inventario-de-interface.md)
+- [Plano de continuidade das telas](docs/plano-continuidade-telas.md)
 - [Publicação da versão web](docs/publicacao-web.md)
 - [Flutter documentation](https://docs.flutter.dev/)

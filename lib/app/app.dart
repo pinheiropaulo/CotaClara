@@ -1,7 +1,6 @@
+import 'package:cota_clara/app/routes/app_router.dart';
+import 'package:cota_clara/app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-
-import 'routes/app_router.dart';
-import 'theme/app_theme.dart';
 
 class CotaClaraApp extends StatelessWidget {
   const CotaClaraApp({super.key});

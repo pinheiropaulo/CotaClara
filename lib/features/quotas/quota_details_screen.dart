@@ -1,19 +1,18 @@
+import 'package:cota_clara/app/routes/app_navigation.dart';
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/features/quotas/widgets/details/assembly_detail_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/bid_detail_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_update_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_update_info_sheet.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_value_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/detail_installment_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/plan_progress_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_details_top_bar.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_identity_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_info_tile.dart';
+import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../app/routes/app_navigation.dart';
-import '../../app/routes/app_routes.dart';
-import '../../shared/widgets/app_bottom_navigation.dart';
-import 'widgets/details/assembly_detail_card.dart';
-import 'widgets/details/bid_detail_card.dart';
-import 'widgets/details/credit_update_card.dart';
-import 'widgets/details/credit_update_info_sheet.dart';
-import 'widgets/details/credit_value_card.dart';
-import 'widgets/details/detail_installment_card.dart';
-import 'widgets/details/plan_progress_card.dart';
-import 'widgets/details/quota_details_top_bar.dart';
-import 'widgets/details/quota_identity_card.dart';
-import 'widgets/details/quota_info_tile.dart';
 
 class QuotaDetailsScreen extends StatelessWidget {
   const QuotaDetailsScreen({super.key});
@@ -80,8 +79,7 @@ class QuotaDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       AssemblyDetailCard(
-                        onPressed: () =>
-                            _showComingSoon(context, 'Detalhes da assembleia'),
+                        onPressed: () => context.push(AppRoutes.assemblies),
                       ),
                       const SizedBox(height: 16),
                       BidDetailCard(

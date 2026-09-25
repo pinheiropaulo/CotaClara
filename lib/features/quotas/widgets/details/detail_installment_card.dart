@@ -1,6 +1,5 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app/theme/app_colors.dart';
 
 class DetailInstallmentCard extends StatelessWidget {
   const DetailInstallmentCard({
@@ -20,27 +19,11 @@ class DetailInstallmentCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Stack(
-          children: [
-            const Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: ColoredBox(
-                color: AppColors.primary,
-                child: SizedBox(width: 4),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-              child: _InstallmentContent(
-                onPayPressed: onPayPressed,
-                onViewAllPressed: onViewAllPressed,
-              ),
-            ),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+        child: _InstallmentContent(
+          onPayPressed: onPayPressed,
+          onViewAllPressed: onViewAllPressed,
         ),
       ),
     );

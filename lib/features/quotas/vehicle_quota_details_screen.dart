@@ -1,22 +1,21 @@
+import 'package:cota_clara/app/routes/app_navigation.dart';
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/features/quotas/widgets/details/assembly_detail_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/bid_detail_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_update_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_update_info_sheet.dart';
+import 'package:cota_clara/features/quotas/widgets/details/credit_value_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/plan_progress_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_details_top_bar.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_help_sheet.dart';
+import 'package:cota_clara/features/quotas/widgets/details/quota_info_tile.dart';
+import 'package:cota_clara/features/quotas/widgets/details/vehicle/adjusted_installment_notice.dart';
+import 'package:cota_clara/features/quotas/widgets/details/vehicle/contract_documents_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/vehicle/vehicle_installment_card.dart';
+import 'package:cota_clara/features/quotas/widgets/details/vehicle/vehicle_quota_identity_card.dart';
+import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../app/routes/app_navigation.dart';
-import '../../app/routes/app_routes.dart';
-import '../../shared/widgets/app_bottom_navigation.dart';
-import 'widgets/details/assembly_detail_card.dart';
-import 'widgets/details/bid_detail_card.dart';
-import 'widgets/details/credit_update_card.dart';
-import 'widgets/details/credit_update_info_sheet.dart';
-import 'widgets/details/credit_value_card.dart';
-import 'widgets/details/plan_progress_card.dart';
-import 'widgets/details/quota_details_top_bar.dart';
-import 'widgets/details/quota_help_sheet.dart';
-import 'widgets/details/quota_info_tile.dart';
-import 'widgets/details/vehicle/adjusted_installment_notice.dart';
-import 'widgets/details/vehicle/contract_documents_card.dart';
-import 'widgets/details/vehicle/vehicle_installment_card.dart';
-import 'widgets/details/vehicle/vehicle_quota_identity_card.dart';
 
 class VehicleQuotaDetailsScreen extends StatelessWidget {
   const VehicleQuotaDetailsScreen({super.key});

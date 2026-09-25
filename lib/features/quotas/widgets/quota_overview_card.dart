@@ -1,9 +1,8 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
+import 'package:cota_clara/features/quotas/widgets/quota_category_icon.dart';
+import 'package:cota_clara/features/quotas/widgets/quota_status_badge.dart';
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import '../models/quota_overview.dart';
-import 'quota_category_icon.dart';
-import 'quota_status_badge.dart';
 
 class QuotaOverviewCard extends StatelessWidget {
   const QuotaOverviewCard({

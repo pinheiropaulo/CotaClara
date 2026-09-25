@@ -1,4 +1,4 @@
-import 'quota_overview.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 
 class QuotaSummary {
   const QuotaSummary._({required this.active, required this.underReview});

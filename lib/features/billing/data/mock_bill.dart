@@ -1,4 +1,4 @@
-import '../models/bill.dart';
+import 'package:cota_clara/features/billing/models/bill.dart';
 
 const mockBill = Bill(
   month: 'setembro',
