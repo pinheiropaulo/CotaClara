@@ -1,4 +1,4 @@
-import '../models/quota_overview.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 
 const mockQuotas = [
   QuotaOverview(
@@ -9,6 +9,8 @@ const mockQuotas = [
     creditValue: 'R\$ 80.000,00',
     dueDate: '15 set.',
     status: QuotaStatus.active,
+    duration: '180 meses',
+    isContemplated: false,
   ),
   QuotaOverview(
     category: QuotaCategory.vehicle,
@@ -18,6 +20,8 @@ const mockQuotas = [
     creditValue: 'R\$ 45.000,00',
     dueDate: '7 out.',
     status: QuotaStatus.active,
+    duration: '80 meses',
+    isContemplated: true,
   ),
   QuotaOverview(
     category: QuotaCategory.services,
@@ -27,5 +31,7 @@ const mockQuotas = [
     creditValue: 'R\$ 20.000,00',
     dueDate: '20 set.',
     status: QuotaStatus.underReview,
+    duration: '36 meses',
+    isContemplated: false,
   ),
 ];
