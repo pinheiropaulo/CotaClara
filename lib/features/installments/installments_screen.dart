@@ -1,17 +1,18 @@
+import 'package:cota_clara/app/routes/app_navigation.dart';
+import 'package:cota_clara/app/routes/app_routes.dart';
+import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/installments/data/mock_installments.dart';
+import 'package:cota_clara/features/installments/models/installment.dart';
+import 'package:cota_clara/features/installments/widgets/installment_card.dart';
+import 'package:cota_clara/features/installments/widgets/installment_filters.dart';
+import 'package:cota_clara/features/installments/widgets/installment_plan_summary.dart';
+import 'package:cota_clara/features/installments/widgets/next_installment_highlight.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
+import 'package:cota_clara/shared/widgets/app_task_top_bar.dart';
+import 'package:cota_clara/shared/widgets/quota_selection_bottom_sheet.dart';
+import 'package:cota_clara/shared/widgets/quota_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../app/routes/app_navigation.dart';
-import '../../app/routes/app_routes.dart';
-import '../../app/theme/app_colors.dart';
-import 'data/mock_installments.dart';
-import 'models/installment.dart';
-import 'widgets/installment_card.dart';
-import 'widgets/installment_filters.dart';
-import 'widgets/installment_plan_summary.dart';
-import 'widgets/installment_quota_card.dart';
-import 'widgets/installments_top_bar.dart';
-import 'widgets/next_installment_highlight.dart';
 
 class InstallmentsScreen extends StatefulWidget {
   const InstallmentsScreen({super.key});
@@ -21,6 +22,7 @@ class InstallmentsScreen extends StatefulWidget {
 }
 
 class _InstallmentsScreenState extends State<InstallmentsScreen> {
+  QuotaOverview? _selectedQuota;
   InstallmentFilter _selectedFilter = InstallmentFilter.all;
 
   List<Installment> get _visibleInstallments =>
@@ -45,16 +47,34 @@ class _InstallmentsScreenState extends State<InstallmentsScreen> {
             constraints: const BoxConstraints(maxWidth: 430),
             child: Column(
               children: [
-                InstallmentsTopBar(
+                AppTaskTopBar(
+                  title: 'Parcelas',
                   onBackPressed: () => context.goBackOr(AppRoutes.quotaDetails),
                   onHelpPressed: () => _showComingSoon('Ajuda com parcelas'),
+                  helpTooltip: 'Ajuda e orientações',
                 ),
                 Expanded(
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
                     children: [
-                      InstallmentQuotaCard(
-                        onPressed: () => _showComingSoon('Seleção de cota'),
+                      QuotaSelectionCard(
+                        title: _selectedQuota?.title ?? 'Cota de imóvel',
+                        description: _selectedQuota != null
+                            ? 'Grupo ${_selectedQuota!.group} • Cota ${_selectedQuota!.number}'
+                            : 'Grupo 012160 • Cota 6503',
+                        icon: _selectedQuota?.category == QuotaCategory.vehicle
+                            ? Icons.directions_car_outlined
+                            : _selectedQuota?.category == QuotaCategory.services
+                            ? Icons.handyman_outlined
+                            : Icons.home_outlined,
+                        onPressed: () async {
+                          final quota = await QuotaSelectionBottomSheet.show(
+                            context,
+                          );
+                          if (quota != null) {
+                            setState(() => _selectedQuota = quota);
+                          }
+                        },
                       ),
                       const SizedBox(height: 24),
                       const InstallmentPlanSummary(),

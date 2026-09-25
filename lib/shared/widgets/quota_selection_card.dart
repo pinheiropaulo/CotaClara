@@ -1,11 +1,23 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/app_colors.dart';
+class QuotaSelectionCard extends StatelessWidget {
+  const QuotaSelectionCard({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.onPressed,
+    this.status = 'Ativa',
+    this.showSelectionControl = true,
+    super.key,
+  });
 
-class InstallmentQuotaCard extends StatelessWidget {
-  const InstallmentQuotaCard({required this.onPressed, super.key});
-
+  final String title;
+  final String description;
+  final IconData icon;
+  final String status;
   final VoidCallback onPressed;
+  final bool showSelectionControl;
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +30,16 @@ class InstallmentQuotaCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onPressed,
-        child: const Padding(
-          padding: EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               CircleAvatar(
                 radius: 22,
                 backgroundColor: AppColors.surfaceElevated,
-                child: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.accentBlue,
-                  size: 22,
-                ),
+                child: Icon(icon, color: AppColors.accentBlue, size: 22),
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,23 +48,24 @@ class InstallmentQuotaCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'Cota de imóvel',
+                            title,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        SizedBox(width: 8),
-                        _ActiveBadge(),
+                        const SizedBox(width: 8),
+                        _ActiveBadge(label: status),
                       ],
                     ),
-                    SizedBox(height: 3),
+                    const SizedBox(height: 3),
                     Text(
-                      'Grupo 012160 • Cota 6503',
-                      style: TextStyle(
+                      description,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
                       ),
@@ -64,7 +73,12 @@ class InstallmentQuotaCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.unfold_more, color: AppColors.accentBlue, size: 20),
+              if (showSelectionControl)
+                const Icon(
+                  Icons.unfold_more,
+                  color: AppColors.accentBlue,
+                  size: 20,
+                ),
             ],
           ),
         ),
@@ -74,20 +88,22 @@ class InstallmentQuotaCard extends StatelessWidget {
 }
 
 class _ActiveBadge extends StatelessWidget {
-  const _ActiveBadge();
+  const _ActiveBadge({required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.successContainer,
         borderRadius: BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         child: Text(
-          'Ativa',
-          style: TextStyle(
+          label,
+          style: const TextStyle(
             color: AppColors.success,
             fontSize: 11,
             fontWeight: FontWeight.w600,

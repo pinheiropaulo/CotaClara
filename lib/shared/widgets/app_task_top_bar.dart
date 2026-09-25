@@ -1,16 +1,21 @@
+import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/app_colors.dart';
-
-class BillTopBar extends StatelessWidget {
-  const BillTopBar({
+class AppTaskTopBar extends StatelessWidget {
+  const AppTaskTopBar({
+    required this.title,
     required this.onBackPressed,
     required this.onHelpPressed,
+    this.helpTooltip = 'Ajuda',
+    this.trailingIcon = Icons.help_outline,
     super.key,
   });
 
+  final String title;
   final VoidCallback onBackPressed;
   final VoidCallback onHelpPressed;
+  final String helpTooltip;
+  final IconData trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +28,22 @@ class BillTopBar extends StatelessWidget {
             onPressed: onBackPressed,
             icon: const Icon(Icons.arrow_back, color: AppColors.accentBlue),
           ),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Boleto da parcela',
+              title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
           IconButton(
-            tooltip: 'Ajuda com boleto',
+            tooltip: helpTooltip,
             onPressed: onHelpPressed,
-            icon: const Icon(
-              Icons.help_outline,
+            icon: Icon(
+              trailingIcon,
               color: AppColors.accentBlue,
               size: 22,
             ),

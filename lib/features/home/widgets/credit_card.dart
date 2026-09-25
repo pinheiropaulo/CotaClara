@@ -1,7 +1,10 @@
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class CreditCard extends StatefulWidget {
-  const CreditCard({super.key});
+  const CreditCard({this.quota, super.key});
+
+  final QuotaOverview? quota;
 
   @override
   State<CreditCard> createState() => _CreditCardState();
@@ -12,6 +15,9 @@ class _CreditCardState extends State<CreditCard> {
 
   @override
   Widget build(BuildContext context) {
+    final creditValue = widget.quota?.creditValue ?? 'R\$ 80.000,00';
+    final duration = widget.quota?.duration ?? '180 meses';
+    final isContemplated = widget.quota?.isContemplated ?? false;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -46,7 +52,7 @@ class _CreditCardState extends State<CreditCard> {
           ),
           const SizedBox(height: 14),
           Text(
-            _showValue ? 'R\$ 80.000,00' : 'R\$ ••••••••',
+            _showValue ? creditValue : 'R\$ ••••••••',
             style: const TextStyle(
               color: Color(0xFFF1F5F8),
               fontSize: 32,
@@ -55,13 +61,13 @@ class _CreditCardState extends State<CreditCard> {
             ),
           ),
           const SizedBox(height: 28),
-          const Row(
+          Row(
             children: [
-              _QuotaStatus(),
-              Spacer(),
+              _QuotaStatus(isContemplated: isContemplated),
+              const Spacer(),
               Text(
-                'Prazo: 180 meses',
-                style: TextStyle(color: Color(0xFF86B7D8), fontSize: 14),
+                'Prazo: $duration',
+                style: const TextStyle(color: Color(0xFF86B7D8), fontSize: 14),
               ),
             ],
           ),
@@ -72,31 +78,41 @@ class _CreditCardState extends State<CreditCard> {
 }
 
 class _QuotaStatus extends StatelessWidget {
-  const _QuotaStatus();
+  const _QuotaStatus({required this.isContemplated});
+
+  final bool isContemplated;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
+    final color = isContemplated
+        ? const Color(0xFF4FC6B6)
+        : const Color(0xFFF3B75C);
+    final bgColor = isContemplated
+        ? const Color(0x334FC6B6)
+        : const Color(0x33F3B75C);
+    final text = isContemplated ? 'Contemplada' : 'Não contemplada';
+
+    return DecoratedBox(
       decoration: BoxDecoration(
-        color: Color(0x337FA9C5),
-        borderRadius: BorderRadius.all(Radius.circular(99)),
+        color: bgColor,
+        borderRadius: const BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             DecoratedBox(
               decoration: BoxDecoration(
-                color: Color(0xFF4FC6B6),
+                color: color,
                 shape: BoxShape.circle,
               ),
-              child: SizedBox(width: 7, height: 7),
+              child: const SizedBox(width: 7, height: 7),
             ),
-            SizedBox(width: 7),
+            const SizedBox(width: 7),
             Text(
-              'Não contemplada',
-              style: TextStyle(
+              text,
+              style: const TextStyle(
                 color: Color(0xFFF1F5F8),
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
