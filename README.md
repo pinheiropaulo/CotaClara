@@ -104,5 +104,6 @@ A estrutura sugerida para separar dados simulados, tema, componentes reutilizáv
 - [Organização prevista do projeto](docs/organizacao-do-projeto.md)
 - [Inventário de componentes e assets](docs/inventario-de-interface.md)
 - [Plano de continuidade das telas](docs/plano-continuidade-telas.md)
+- [Regra de composição para telas Flutter](.cursor/rules/flutter-screen-composition.mdc)
 - [Publicação da versão web](docs/publicacao-web.md)
 - [Flutter documentation](https://docs.flutter.dev/)

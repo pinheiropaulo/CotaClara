@@ -8,11 +8,16 @@ import 'package:cota_clara/features/bids/bid_success_screen.dart';
 import 'package:cota_clara/features/billing/bill_screen.dart';
 import 'package:cota_clara/features/home/home_screen.dart';
 import 'package:cota_clara/features/installments/installments_screen.dart';
+import 'package:cota_clara/features/notifications/notifications_screen.dart';
+import 'package:cota_clara/features/profile/profile_screen.dart';
 import 'package:cota_clara/features/quotas/credit_release_screen.dart';
 import 'package:cota_clara/features/quotas/quota_details_screen.dart';
 import 'package:cota_clara/features/quotas/quotas_screen.dart';
 import 'package:cota_clara/features/quotas/statement_screen.dart';
 import 'package:cota_clara/features/quotas/vehicle_quota_details_screen.dart';
+import 'package:cota_clara/features/services/services_screen.dart';
+import 'package:cota_clara/features/settings/settings_screen.dart';
+import 'package:cota_clara/features/support/support_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -33,6 +38,26 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.quotas,
       builder: (context, state) => const QuotasScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.services,
+      builder: (context, state) => const ServicesScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.profile,
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.settings,
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.support,
+      builder: (context, state) => const SupportScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.notifications,
+      builder: (context, state) => const NotificationsScreen(),
     ),
     GoRoute(
       path: AppRoutes.statement,

@@ -1,0 +1,16 @@
+---
+description: Keep Flutter screen files focused on composition and prevent monolithic UI files
+globs: lib/features/**/*_screen.dart
+alwaysApply: false
+---
+
+# Screen composition
+
+- A `*_screen.dart` composes the page only: `Scaffold`, route callbacks, page-level state and ordered sections.
+- Target up to 150 lines. Before exceeding that size, extract the largest visual section to `widgets/`.
+- Do not add cards, list rows, badges, dialogs, bottom sheets, input validation or mock lists directly to a screen file.
+- Put one meaningful visual unit per widget file. Keep data lists in `data/` and models in `models/` when they are reused or have more than one field.
+- Extract a component to `lib/shared/widgets/` only after it is used by two features; otherwise keep it in the current feature's `widgets/` folder.
+- Small page-specific callbacks such as navigation or a temporary `SnackBar` may remain in the screen.
+- Preserve behavior while extracting: callbacks must be received by widgets instead of accessing navigation or business logic directly.
+- Before finishing, run `dart format` on changed files and `dart analyze`.

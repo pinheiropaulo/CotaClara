@@ -76,6 +76,44 @@ Regras práticas:
 - Para a volta de telas de detalhe, usar `context.goBackOr(fallbackLocation)`.
 - Manter `Navigator` somente em fluxos locais, como `showModalBottomSheet`.
 
+### Regra contra telas monolíticas
+
+O arquivo `*_screen.dart` é o orquestrador da página, não o local onde todos os elementos visuais são implementados. Ele deve conter somente `Scaffold`, estrutura de rolagem, callbacks de navegação e a sequência das seções da tela.
+
+- Meta: até **150 linhas** por arquivo de tela. Ao se aproximar desse limite, extrair a maior seção visual antes de continuar.
+- Não criar cartões, badges, linhas de lista, formulários, validações, diálogos, bottom sheets ou listas simuladas dentro de `*_screen.dart`.
+- Cada seção visual relevante vira um widget em `features/<domínio>/widgets/`, por exemplo `bid_offer_summary_card.dart` ou `installment_filter_bar.dart`.
+- Se o mesmo componente for usado por duas features, movê-lo para `shared/widgets/`; se for usado por uma única feature, mantê-lo dentro dela.
+- Dados simulados com vários campos ou listas devem ficar em `data/` e, quando necessário, seus tipos em `models/`.
+- Callbacks pequenos de rota ou uma `SnackBar` temporária podem ficar na tela. O widget recebe callbacks; ele não deve decidir a navegação por conta própria.
+
+Exemplo de composição esperada:
+
+```dart
+class BidOfferScreen extends StatelessWidget {
+  const BidOfferScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        children: [
+          BidOfferHeader(onBackPressed: () => context.pop()),
+          BidQuotaCard(onPressed: () => showQuotaSelector(context)),
+          BidAmountCard(onChanged: onAmountChanged),
+          BidTermsNotice(),
+          BidOfferAction(onPressed: submitOffer),
+        ],
+      ),
+    );
+  }
+}
+```
+
+Para agentes que não leem regras do editor, copiar estas instruções antes de pedir uma nova tela:
+
+> Implemente somente uma tela. Mantenha o arquivo `*_screen.dart` com no máximo 150 linhas e restrito à composição, callbacks e navegação. Extraia cada cartão, seção, bottom sheet, formulário, validação e lista para arquivos em `widgets/`, `data/` ou `models/`. Reutilize componentes de `shared/widgets/` apenas quando usados em mais de uma feature. Ao final, execute `dart format` nos arquivos alterados e `dart analyze`.
+
 ## Padrão visual obrigatório
 
 Consulte [design-system.md](design-system.md). Em especial:

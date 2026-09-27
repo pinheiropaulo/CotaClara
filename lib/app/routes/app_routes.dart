@@ -3,6 +3,11 @@ abstract final class AppRoutes {
   static const login = '/login';
   static const home = '/home';
   static const quotas = '/quotas';
+  static const services = '/services';
+  static const profile = '/profile';
+  static const notifications = '/notifications';
+  static const settings = '/settings';
+  static const support = '/support';
   static const statement = '/quotas/statement';
   static const creditRelease = '/quotas/credit-release';
   static const quotaDetails = '/quota-details';
