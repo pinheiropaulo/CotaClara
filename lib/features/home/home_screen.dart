@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverToBoxAdapter(
                   child: HomeHeader(
                     onNotificationsPressed: () =>
-                        _showComingSoon(context, 'Notificações'),
+                        context.push(AppRoutes.notifications),
                     onProfilePressed: () => _showComingSoon(context, 'Perfil'),
                   ),
                 ),
@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       CreditCard(quota: _selectedQuota),
                       const SizedBox(height: 24),
                       NextInstallmentCard(
+                        quota: _selectedQuota,
                         onPayPressed: () => _showComingSoon(context, 'Boleto'),
                         onViewInstallmentsPressed: () =>
                             _showComingSoon(context, 'Parcelas'),

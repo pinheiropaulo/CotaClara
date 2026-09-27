@@ -19,6 +19,7 @@ class QuotaOverview {
     required this.creditValue,
     required this.dueDate,
     required this.status,
+    required this.installmentValue,
     this.duration = '180 meses',
     this.isContemplated = false,
   });
@@ -29,6 +30,7 @@ class QuotaOverview {
   final String number;
   final String creditValue;
   final String dueDate;
+  final String installmentValue;
   final QuotaStatus status;
   final String duration;
   final bool isContemplated;

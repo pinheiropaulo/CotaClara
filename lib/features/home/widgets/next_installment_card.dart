@@ -1,14 +1,17 @@
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class NextInstallmentCard extends StatelessWidget {
   const NextInstallmentCard({
     required this.onPayPressed,
     required this.onViewInstallmentsPressed,
+    this.quota,
     super.key,
   });
 
   final VoidCallback onPayPressed;
   final VoidCallback onViewInstallmentsPressed;
+  final QuotaOverview? quota;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +41,9 @@ class NextInstallmentCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 18),
-          const Text(
-            'R\$ 842,50',
-            style: TextStyle(
+          Text(
+            quota?.installmentValue ?? 'R\$ 842,50',
+            style: const TextStyle(
               color: Color(0xFFF1F5F8),
               fontSize: 32,
               height: 1.1,
@@ -48,17 +51,17 @@ class NextInstallmentCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.calendar_today_outlined,
                 color: Color(0xFFAAB7C2),
                 size: 18,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
-                'Vence em 15 de setembro',
-                style: TextStyle(color: Color(0xFFAAB7C2), fontSize: 14),
+                'Vence em ${quota?.dueDate.replaceAll('.', '') ?? "15 de setembro"}',
+                style: const TextStyle(color: Color(0xFFAAB7C2), fontSize: 14),
               ),
             ],
           ),
