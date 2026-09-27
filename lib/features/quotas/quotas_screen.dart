@@ -40,6 +40,14 @@ class _QuotasScreenState extends State<QuotasScreen> {
       context.go(AppRoutes.home);
       return;
     }
+    if (index == 2) {
+      context.go(AppRoutes.services);
+      return;
+    }
+    if (index == 3) {
+      context.go(AppRoutes.profile);
+      return;
+    }
 
     const destinations = ['Início', 'Cotas', 'Serviços', 'Perfil'];
     _showComingSoon(destinations[index]);
