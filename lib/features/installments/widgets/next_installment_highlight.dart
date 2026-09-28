@@ -1,15 +1,18 @@
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class NextInstallmentHighlight extends StatelessWidget {
   const NextInstallmentHighlight({
     required this.onPayPressed,
     required this.onDetailsPressed,
+    required this.quota,
     super.key,
   });
 
   final VoidCallback onPayPressed;
   final VoidCallback onDetailsPressed;
+  final QuotaOverview quota;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +59,9 @@ class NextInstallmentHighlight extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'R\$ 842,50',
-                    style: TextStyle(
+                  Text(
+                    quota.installmentValue,
+                    style: const TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 30,
                       fontWeight: FontWeight.w700,

@@ -1,9 +1,6 @@
 import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_navigation.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
-import 'package:cota_clara/features/quotas/models/quota_overview.dart';
-import 'package:cota_clara/features/quotas/services_quota_details_screen.dart';
-import 'package:cota_clara/features/quotas/vehicle_quota_details_screen.dart';
 import 'package:cota_clara/features/quotas/widgets/details/assembly_detail_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/bid_detail_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/credit_update_card.dart';
@@ -18,13 +15,13 @@ import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class QuotaDetailsScreen extends StatelessWidget {
-  const QuotaDetailsScreen({super.key});
+class ServicesQuotaDetailsScreen extends StatelessWidget {
+  const ServicesQuotaDetailsScreen({super.key});
 
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$feature será implementado em uma próxima etapa.'),
+        content: Text(' será implementado em uma próxima etapa.'),
       ),
     );
   }
@@ -43,15 +40,7 @@ class QuotaDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final quota = MockApi.instance.currentQuota.value;
-
-    if (quota?.category == QuotaCategory.vehicle) {
-      return const VehicleQuotaDetailsScreen();
-    } else if (quota?.category == QuotaCategory.services) {
-      return const ServicesQuotaDetailsScreen();
-    }
-
-    // Otherwise show property/generic
+    final quota = MockApi.instance.currentQuota.value!;
     return Scaffold(
       bottomNavigationBar: AppBottomNavigation(
         currentIndex: 1,
@@ -75,7 +64,7 @@ class QuotaDetailsScreen extends StatelessWidget {
                     children: [
                       const QuotaIdentityCard(),
                       const SizedBox(height: 16),
-                      CreditValueCard(contractedValue: quota!.creditValue),
+                      CreditValueCard(contractedValue: quota.creditValue),
                       const SizedBox(height: 16),
                       CreditUpdateCard(
                         contractedValue: quota.creditValue,
@@ -96,14 +85,6 @@ class QuotaDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       BidDetailCard(
                         onPressed: () => context.push(AppRoutes.bidOffer),
-                      ),
-                      const SizedBox(height: 16),
-                      QuotaInfoTile(
-                        icon: Icons.credit_score_outlined,
-                        title: 'Liberação de crédito',
-                        subtitle: 'Disponível após a contemplação',
-                        informationOnly: true,
-                        onPressed: () => context.push(AppRoutes.creditRelease),
                       ),
                       const SizedBox(height: 16),
                       QuotaInfoTile(

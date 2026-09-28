@@ -1,5 +1,5 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
-import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/features/support/widgets/support_message_card.dart';
 import 'package:cota_clara/features/support/widgets/support_security_note.dart';
@@ -20,7 +20,7 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedQuota = mockQuotas.first;
+    _selectedQuota = MockApi.instance.currentQuota.value!;
   }
 
   void _showComingSoon(String feature) {

@@ -1,7 +1,7 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
-import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
-import 'package:cota_clara/features/quotas/data/mock_statement.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
+import 'package:cota_clara/features/quotas/models/statement_entry.dart';
 import 'package:cota_clara/features/quotas/widgets/statement_filter_chips.dart';
 import 'package:cota_clara/features/quotas/widgets/statement_month_section.dart';
 import 'package:cota_clara/features/quotas/widgets/statement_period_header.dart';
@@ -20,9 +20,42 @@ class StatementScreen extends StatefulWidget {
 }
 
 class _StatementScreenState extends State<StatementScreen> {
-  QuotaOverview? _selectedQuota;
   String _selectedFilter = 'Todas';
   bool _showValues = true;
+
+  List<StatementMonthGroup> _statementGroups = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    MockApi.instance.currentQuota.addListener(_onQuotaChanged);
+    _loadStatement();
+  }
+
+  @override
+  void dispose() {
+    MockApi.instance.currentQuota.removeListener(_onQuotaChanged);
+    super.dispose();
+  }
+
+  void _onQuotaChanged() {
+    setState(() {});
+    _loadStatement();
+  }
+
+  Future<void> _loadStatement() async {
+    setState(() => _isLoading = true);
+    final data = await MockApi.instance.getStatement(
+      MockApi.instance.currentQuota.value!.id,
+    );
+    if (mounted) {
+      setState(() {
+        _statementGroups = data;
+        _isLoading = false;
+      });
+    }
+  }
 
   void _showComingSoon(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -30,12 +63,6 @@ class _StatementScreenState extends State<StatementScreen> {
         content: Text('$feature será implementado em uma próxima etapa.'),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedQuota = mockQuotas.first;
   }
 
   @override
@@ -59,13 +86,16 @@ class _StatementScreenState extends State<StatementScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
                     children: [
                       QuotaSelectionCard(
-                        title: _selectedQuota?.title ?? '',
-                        description: _selectedQuota != null
-                            ? 'Grupo ${_selectedQuota!.group} • Cota ${_selectedQuota!.number}'
+                        title: MockApi.instance.currentQuota.value?.title ?? '',
+                        description: MockApi.instance.currentQuota.value != null
+                            ? 'Grupo ${MockApi.instance.currentQuota.value!.group} • Cota ${MockApi.instance.currentQuota.value!.number}'
                             : '',
-                        icon: _selectedQuota?.category == QuotaCategory.vehicle
+                        icon:
+                            MockApi.instance.currentQuota.value?.category ==
+                                QuotaCategory.vehicle
                             ? Icons.directions_car_outlined
-                            : _selectedQuota?.category == QuotaCategory.services
+                            : MockApi.instance.currentQuota.value?.category ==
+                                  QuotaCategory.services
                             ? Icons.handyman_outlined
                             : Icons.home_outlined,
                         onPressed: () async {
@@ -73,7 +103,7 @@ class _StatementScreenState extends State<StatementScreen> {
                             context,
                           );
                           if (quota != null) {
-                            setState(() => _selectedQuota = quota);
+                            MockApi.instance.selectQuota(quota.id);
                           }
                         },
                       ),
@@ -99,15 +129,18 @@ class _StatementScreenState extends State<StatementScreen> {
                       ),
                       const SizedBox(height: 24),
 
-                      ...mockStatementGroups.map(
-                        (group) => StatementMonthSection(
-                          group: group,
-                          showValues: _showValues,
-                          filter: _selectedFilter,
-                          onEntryPressed: () =>
-                              _showComingSoon('Detalhes da movimentação'),
+                      if (_isLoading)
+                        const Center(child: CircularProgressIndicator())
+                      else
+                        ..._statementGroups.map(
+                          (group) => StatementMonthSection(
+                            group: group,
+                            showValues: _showValues,
+                            filter: _selectedFilter,
+                            onEntryPressed: () =>
+                                _showComingSoon('Detalhes da movimentação'),
+                          ),
                         ),
-                      ),
 
                       const SizedBox(height: 16),
                       Center(

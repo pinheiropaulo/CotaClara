@@ -1,4 +1,6 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class QuotaIdentityCard extends StatelessWidget {
@@ -6,6 +8,17 @@ class QuotaIdentityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final quota = MockApi.instance.currentQuota.value!;
+
+    IconData icon;
+    if (quota.category == QuotaCategory.vehicle) {
+      icon = Icons.directions_car_outlined;
+    } else if (quota.category == QuotaCategory.services) {
+      icon = Icons.handyman_outlined;
+    } else {
+      icon = Icons.home_outlined;
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -22,29 +35,29 @@ class QuotaIdentityCard extends StatelessWidget {
               color: AppColors.surfaceElevated,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
-              Icons.home_outlined,
+            child: Icon(
+              icon,
               color: AppColors.accentBlue,
               size: 22,
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Cota de imóvel',
-                  style: TextStyle(
+                  quota.title,
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  'Grupo 012160 • Cota 6503',
-                  style: TextStyle(
+                  'Grupo    Cota ',
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
                   ),
@@ -52,14 +65,14 @@ class QuotaIdentityCard extends StatelessWidget {
               ],
             ),
           ),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _ActiveBadge(),
-              SizedBox(height: 4),
+              _ActiveBadge(status: quota.status),
+              const SizedBox(height: 4),
               Text(
-                'Não contemplada',
-                style: TextStyle(
+                quota.isContemplated ? 'Contemplada' : 'Não contemplada',
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
                 ),
@@ -73,20 +86,35 @@ class QuotaIdentityCard extends StatelessWidget {
 }
 
 class _ActiveBadge extends StatelessWidget {
-  const _ActiveBadge();
+  const _ActiveBadge({required this.status});
+  final QuotaStatus status;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
+    Color color = AppColors.success;
+    Color bgColor = AppColors.successContainer;
+    String text = 'Ativa';
+
+    if (status == QuotaStatus.underReview) {
+      color = AppColors.warning;
+      bgColor = AppColors.warningContainer;
+      text = 'Em análise';
+    } else if (status == QuotaStatus.blocked) {
+      color = AppColors.error;
+      bgColor = AppColors.errorContainer;
+      text = 'Em atraso';
+    }
+
+    return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.successContainer,
-        borderRadius: BorderRadius.all(Radius.circular(99)),
+        color: bgColor,
+        borderRadius: const BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
         child: Text(
-          'Ativa',
-          style: TextStyle(color: AppColors.success, fontSize: 12),
+          text,
+          style: TextStyle(color: color, fontSize: 12),
         ),
       ),
     );

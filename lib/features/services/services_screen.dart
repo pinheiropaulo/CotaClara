@@ -1,6 +1,6 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
-import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/features/services/widgets/services_menu_sections.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
@@ -22,7 +22,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedQuota = mockQuotas.first;
+    _selectedQuota = MockApi.instance.currentQuota.value!;
   }
 
   void _showComingSoon(String feature) {

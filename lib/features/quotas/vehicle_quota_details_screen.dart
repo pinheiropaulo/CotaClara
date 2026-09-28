@@ -1,3 +1,4 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_navigation.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/features/quotas/widgets/details/assembly_detail_card.dart';
@@ -29,21 +30,20 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
   }
 
   void _onDestinationSelected(BuildContext context, int index) {
-    if (index == 1) {
-      context.go(AppRoutes.quotas);
-      return;
-    }
     if (index == 0) {
       context.go(AppRoutes.home);
-      return;
+    } else if (index == 1) {
+      context.go(AppRoutes.quotas);
+    } else if (index == 2) {
+      context.go(AppRoutes.services);
+    } else if (index == 3) {
+      context.go(AppRoutes.profile);
     }
-
-    const destinations = ['Início', 'Cotas', 'Serviços', 'Perfil'];
-    _showComingSoon(context, destinations[index]);
   }
 
   @override
   Widget build(BuildContext context) {
+    final quota = MockApi.instance.currentQuota.value!;
     return Scaffold(
       bottomNavigationBar: AppBottomNavigation(
         currentIndex: 1,
@@ -72,7 +72,16 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                     children: [
                       const VehicleQuotaIdentityCard(),
                       const SizedBox(height: 16),
-                      const CreditValueCard(
+                      CreditValueCard(
+                        contractedValue: quota.creditValue,
+                      ),
+                      const SizedBox(height: 16),
+                      CreditUpdateCard(
+                        onInfoPressed: () => showCreditUpdateInfoSheet(context),
+                        contractedValue: quota.creditValue,
+                      ),
+                      const SizedBox(height: 16),
+                      CreditValueCard(
                         currentValue: 'R\$ 80.000,00',
                         duration: '120 meses',
                       ),
@@ -99,9 +108,9 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       VehicleInstallmentCard(
-                        onPayPressed: () => _showComingSoon(context, 'Boleto'),
+                        onPayPressed: () => context.push(AppRoutes.bill),
                         onViewAllPressed: () =>
-                            _showComingSoon(context, 'Parcelas'),
+                            context.push(AppRoutes.installments),
                       ),
                       const SizedBox(height: 16),
                       AssemblyDetailCard(
@@ -115,8 +124,7 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                       BidDetailCard(
                         deadline: 'Prazo até 14 de outubro, às 18h',
                         deadlineOnTrailing: true,
-                        onPressed: () =>
-                            _showComingSoon(context, 'Oferta de lance'),
+                        onPressed: () => context.push(AppRoutes.bidOffer),
                       ),
                       const SizedBox(height: 16),
                       QuotaInfoTile(
@@ -124,16 +132,14 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                         title: 'Liberação de crédito',
                         subtitle: 'Disponível após a contemplação',
                         informationOnly: true,
-                        onPressed: () =>
-                            _showComingSoon(context, 'Liberação de crédito'),
+                        onPressed: () => context.push(AppRoutes.creditRelease),
                       ),
                       const SizedBox(height: 16),
                       QuotaInfoTile(
                         icon: Icons.receipt_long_outlined,
                         title: 'Extrato da cota',
                         subtitle: 'Consulte pagamentos e movimentações',
-                        onPressed: () =>
-                            _showComingSoon(context, 'Extrato da cota'),
+                        onPressed: () => context.push(AppRoutes.statement),
                       ),
                       const SizedBox(height: 20),
                       ContractDocumentsCard(

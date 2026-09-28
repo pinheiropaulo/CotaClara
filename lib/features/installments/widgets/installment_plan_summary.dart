@@ -1,11 +1,19 @@
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class InstallmentPlanSummary extends StatelessWidget {
-  const InstallmentPlanSummary({super.key});
+  const InstallmentPlanSummary({required this.quota, super.key});
+
+  final QuotaOverview quota;
 
   @override
   Widget build(BuildContext context) {
+    final int totalDuration = int.tryParse(quota.duration.split(' ')[0]) ?? 180;
+    final int paid = 42;
+    final int remaining = totalDuration - paid;
+    final double percent = (paid / totalDuration);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -13,11 +21,11 @@ class InstallmentPlanSummary extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
-      child: const Column(
+      child: Column(
         children: [
           Row(
             children: [
-              Expanded(
+              const Expanded(
                 child: Text(
                   'Resumo do plano',
                   style: TextStyle(
@@ -27,16 +35,16 @@ class InstallmentPlanSummary extends StatelessWidget {
                   ),
                 ),
               ),
-              _ProgressBadge(),
+              _ProgressBadge(percent: percent * 100),
             ],
           ),
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
           Row(
             children: [
               Expanded(
                 child: Text(
-                  '42 de 180 parcelas pagas',
-                  style: TextStyle(
+                  '$paid de $totalDuration parcelas pagas',
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -44,19 +52,19 @@ class InstallmentPlanSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                '138 restantes',
-                style: TextStyle(
+                '$remaining restantes',
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(99)),
+            borderRadius: const BorderRadius.all(Radius.circular(99)),
             child: LinearProgressIndicator(
-              value: 0.23,
+              value: percent,
               minHeight: 8,
               color: AppColors.primary,
               backgroundColor: AppColors.border,
@@ -69,20 +77,22 @@ class InstallmentPlanSummary extends StatelessWidget {
 }
 
 class _ProgressBadge extends StatelessWidget {
-  const _ProgressBadge();
+  const _ProgressBadge({required this.percent});
+
+  final double percent;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.successContainer,
         borderRadius: BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         child: Text(
-          '23% concluído',
-          style: TextStyle(
+          '${percent.toInt()}% concluído',
+          style: const TextStyle(
             color: AppColors.success,
             fontSize: 12,
             fontWeight: FontWeight.w600,

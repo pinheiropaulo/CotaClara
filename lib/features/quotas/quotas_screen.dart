@@ -1,5 +1,5 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
-import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/features/quotas/models/quota_summary.dart';
 import 'package:cota_clara/features/quotas/widgets/assembly_hint.dart';
@@ -19,11 +19,29 @@ class QuotasScreen extends StatefulWidget {
 
 class _QuotasScreenState extends State<QuotasScreen> {
   QuotaCategory? _selectedCategory;
+  List<QuotaOverview> _allQuotas = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadQuotas();
+  }
+
+  Future<void> _loadQuotas() async {
+    final quotas = await MockApi.instance.getQuotas();
+    if (mounted) {
+      setState(() {
+        _allQuotas = quotas;
+        _isLoading = false;
+      });
+    }
+  }
 
   List<QuotaOverview> get _visibleQuotas {
     final category = _selectedCategory;
-    if (category == null) return mockQuotas;
-    return mockQuotas.where((quota) => quota.category == category).toList();
+    if (category == null) return _allQuotas;
+    return _allQuotas.where((quota) => quota.category == category).toList();
   }
 
   void _showComingSoon(String feature) {
@@ -56,6 +74,9 @@ class _QuotasScreenState extends State<QuotasScreen> {
   @override
   Widget build(BuildContext context) {
     final quotas = _visibleQuotas;
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       bottomNavigationBar: AppBottomNavigation(
@@ -71,10 +92,11 @@ class _QuotasScreenState extends State<QuotasScreen> {
               padding: const EdgeInsets.only(bottom: 24),
               children: [
                 QuotasHeader(
-                  onNotificationsPressed: () => _showComingSoon('Notificações'),
+                  onNotificationsPressed: () =>
+                      context.push(AppRoutes.notifications),
                 ),
                 QuotaFilters(
-                  summary: QuotaSummary.fromQuotas(quotas),
+                  summary: QuotaSummary.fromQuotas(_allQuotas),
                   selectedCategory: _selectedCategory,
                   onCategorySelected: (category) {
                     setState(() => _selectedCategory = category);

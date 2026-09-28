@@ -1,3 +1,4 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/features/home/widgets/credit_card.dart';
 import 'package:cota_clara/features/home/widgets/home_header.dart';
@@ -6,7 +7,6 @@ import 'package:cota_clara/features/home/widgets/quick_access_section.dart';
 import 'package:cota_clara/features/home/widgets/quota_selector.dart';
 import 'package:cota_clara/features/home/widgets/quota_tracking_section.dart';
 import 'package:cota_clara/features/home/widgets/upcoming_due_section.dart';
-import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  QuotaOverview? _selectedQuota;
+  @override
+  void initState() {
+    super.initState();
+    MockApi.instance.currentQuota.addListener(_onQuotaChanged);
+  }
+
+  @override
+  void dispose() {
+    MockApi.instance.currentQuota.removeListener(_onQuotaChanged);
+    super.dispose();
+  }
+
+  void _onQuotaChanged() {
+    setState(() {});
+  }
 
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -64,24 +78,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
                       QuotaSelector(
-                        quota: _selectedQuota,
+                        quota: MockApi.instance.currentQuota.value,
                         onPressed: () async {
                           final quota = await QuotaSelectionBottomSheet.show(
                             context,
                           );
                           if (quota != null) {
-                            setState(() => _selectedQuota = quota);
+                            MockApi.instance.selectQuota(quota.id);
                           }
                         },
                       ),
                       const SizedBox(height: 16),
-                      CreditCard(quota: _selectedQuota),
+                      CreditCard(quota: MockApi.instance.currentQuota.value),
                       const SizedBox(height: 24),
                       NextInstallmentCard(
-                        quota: _selectedQuota,
-                        onPayPressed: () => _showComingSoon(context, 'Boleto'),
+                        quota: MockApi.instance.currentQuota.value,
+                        onPayPressed: () => context.push(AppRoutes.bill),
                         onViewInstallmentsPressed: () =>
-                            _showComingSoon(context, 'Parcelas'),
+                            context.push(AppRoutes.installments),
                       ),
                       const SizedBox(height: 20),
                       UpcomingDueSection(

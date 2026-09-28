@@ -1,11 +1,13 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
-import 'package:cota_clara/features/quotas/data/mock_quotas.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_card.dart';
 import 'package:flutter/material.dart';
 
 class QuotaSelectionBottomSheet extends StatelessWidget {
-  const QuotaSelectionBottomSheet({super.key});
+  const QuotaSelectionBottomSheet({required this.quotas, super.key});
+
+  final List<QuotaOverview> quotas;
 
   static Future<QuotaOverview?> show(BuildContext context) {
     return showModalBottomSheet<QuotaOverview>(
@@ -15,7 +17,15 @@ class QuotaSelectionBottomSheet extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => const QuotaSelectionBottomSheet(),
+      builder: (context) => FutureBuilder<List<QuotaOverview>>(
+        future: MockApi.instance.getQuotas(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return QuotaSelectionBottomSheet(quotas: snapshot.data!);
+        },
+      ),
     );
   }
 
@@ -81,11 +91,11 @@ class QuotaSelectionBottomSheet extends StatelessWidget {
               child: ListView.separated(
                 shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemCount: mockQuotas.length,
+                itemCount: quotas.length,
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final quota = mockQuotas[index];
+                  final quota = quotas[index];
                   String statusText = 'Ativa';
                   if (quota.status == QuotaStatus.underReview) {
                     statusText = 'Em análise';

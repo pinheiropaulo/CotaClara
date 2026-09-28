@@ -8,10 +8,11 @@ enum QuotaCategory {
   final String label;
 }
 
-enum QuotaStatus { active, underReview }
+enum QuotaStatus { active, underReview, blocked }
 
 class QuotaOverview {
   const QuotaOverview({
+    required this.id,
     required this.category,
     required this.title,
     required this.group,
@@ -24,6 +25,7 @@ class QuotaOverview {
     this.isContemplated = false,
   });
 
+  final String id;
   final QuotaCategory category;
   final String title;
   final String group;
