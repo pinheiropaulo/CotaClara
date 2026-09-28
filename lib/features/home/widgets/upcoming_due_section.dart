@@ -1,18 +1,23 @@
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class UpcomingDueSection extends StatelessWidget {
   const UpcomingDueSection({
+    required this.quotas,
     required this.onViewAllPressed,
     required this.onDuePressed,
     super.key,
   });
 
+  final List<QuotaOverview> quotas;
   final VoidCallback onViewAllPressed;
   final ValueChanged<String> onDuePressed;
 
   @override
   Widget build(BuildContext context) {
+    if (quotas.isEmpty) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,25 +57,14 @@ class UpcomingDueSection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _UpcomingDueItem(
-                icon: Icons.home_outlined,
-                title: 'Cota de imóvel',
-                detail: '15 set. · R\$ 842,50',
-                status: 'Pendente',
-                statusColor: AppColors.warning,
-                statusBackground: AppColors.warningContainer,
-                onPressed: () => onDuePressed('property_1'),
-              ),
-              const Divider(height: 1, color: AppColors.border),
-              _UpcomingDueItem(
-                icon: Icons.directions_car_outlined,
-                title: 'Consórcio de veículo',
-                detail: '10 out. · R\$ 842,36',
-                status: 'Em aberto',
-                statusColor: AppColors.accentBlue,
-                statusBackground: Color(0xFF1D4054),
-                onPressed: () => onDuePressed('vehicle_1'),
-              ),
+              for (var index = 0; index < quotas.length; index++) ...[
+                _UpcomingDueItem(
+                  quota: quotas[index],
+                  onPressed: () => onDuePressed(quotas[index].id),
+                ),
+                if (index < quotas.length - 1)
+                  const Divider(height: 1, color: AppColors.border),
+              ],
             ],
           ),
         ),
@@ -81,25 +75,18 @@ class UpcomingDueSection extends StatelessWidget {
 
 class _UpcomingDueItem extends StatelessWidget {
   const _UpcomingDueItem({
-    required this.icon,
-    required this.title,
-    required this.detail,
-    required this.status,
-    required this.statusColor,
-    required this.statusBackground,
+    required this.quota,
     required this.onPressed,
   });
 
-  final IconData icon;
-  final String title;
-  final String detail;
-  final String status;
-  final Color statusColor;
-  final Color statusBackground;
+  final QuotaOverview quota;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final (statusColor, statusBackground) = _statusColors(
+      quota.nextInstallmentStatus,
+    );
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(16),
@@ -114,7 +101,11 @@ class _UpcomingDueItem extends StatelessWidget {
                 color: AppColors.surfaceElevated,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 20),
+              child: Icon(
+                _iconFor(quota.category),
+                color: AppColors.primary,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -122,7 +113,7 @@ class _UpcomingDueItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    quota.title,
                     style: const TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 14,
@@ -131,7 +122,7 @@ class _UpcomingDueItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    detail,
+                    '${quota.dueDate} · ${quota.installmentValue}',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -142,7 +133,7 @@ class _UpcomingDueItem extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             _StatusBadge(
-              label: status,
+              label: quota.nextInstallmentStatus,
               foregroundColor: statusColor,
               backgroundColor: statusBackground,
             ),
@@ -157,6 +148,19 @@ class _UpcomingDueItem extends StatelessWidget {
       ),
     );
   }
+
+  IconData _iconFor(QuotaCategory category) => switch (category) {
+    QuotaCategory.property => Icons.home_outlined,
+    QuotaCategory.vehicle => Icons.directions_car_outlined,
+    QuotaCategory.services => Icons.handyman_outlined,
+  };
+
+  (Color, Color) _statusColors(String status) => switch (status) {
+    'Em aberto' => (AppColors.accentBlue, const Color(0xFF1D4054)),
+    'Em atraso' => (AppColors.error, AppColors.errorContainer),
+    'Em análise' => (AppColors.warning, AppColors.warningContainer),
+    _ => (AppColors.warning, AppColors.warningContainer),
+  };
 }
 
 class _StatusBadge extends StatelessWidget {

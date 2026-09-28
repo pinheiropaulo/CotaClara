@@ -7,6 +7,7 @@ import 'package:cota_clara/features/home/widgets/quick_access_section.dart';
 import 'package:cota_clara/features/home/widgets/quota_selector.dart';
 import 'package:cota_clara/features/home/widgets/quota_tracking_section.dart';
 import 'package:cota_clara/features/home/widgets/upcoming_due_section.dart';
+import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<QuotaOverview> _upcomingDueQuotas = [];
+
   @override
   void initState() {
     super.initState();
     MockApi.instance.currentQuota.addListener(_onQuotaChanged);
+    _loadUpcomingDueQuotas();
   }
 
   @override
@@ -36,12 +40,23 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  Future<void> _loadUpcomingDueQuotas() async {
+    final quotas = await MockApi.instance.getUpcomingDueQuotas();
+    if (!mounted) return;
+    setState(() => _upcomingDueQuotas = quotas);
+  }
+
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('$feature será implementado em uma próxima etapa.'),
       ),
     );
+  }
+
+  void _openBillForQuota(BuildContext context, String quotaId) {
+    MockApi.instance.selectQuota(quotaId);
+    context.push(AppRoutes.bill);
   }
 
   @override
@@ -99,10 +114,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 20),
                       UpcomingDueSection(
+                        quotas: _upcomingDueQuotas,
                         onViewAllPressed: () =>
                             context.push(AppRoutes.installments),
-                        onDuePressed: (quotaName) =>
-                            _showComingSoon(context, quotaName),
+                        onDuePressed: (quotaId) =>
+                            _openBillForQuota(context, quotaId),
                       ),
                       const SizedBox(height: 30),
                       QuotaTrackingSection(

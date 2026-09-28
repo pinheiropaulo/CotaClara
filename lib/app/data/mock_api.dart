@@ -1,6 +1,7 @@
 import 'package:cota_clara/features/billing/models/bill.dart';
 import 'package:cota_clara/features/installments/models/installment.dart';
 import 'package:cota_clara/features/notifications/models/notification_item.dart';
+import 'package:cota_clara/features/quotas/models/quota_details_data.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/features/quotas/models/statement_entry.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class MockApi {
       dueDate: '15 set.',
       status: QuotaStatus.active,
       installmentValue: 'R\$ 842,50',
+      nextInstallmentStatus: 'Pendente',
       duration: '240 meses',
       isContemplated: false,
     ),
@@ -47,6 +49,7 @@ class MockApi {
       dueDate: '7 out.',
       status: QuotaStatus.active,
       installmentValue: 'R\$ 400,00',
+      nextInstallmentStatus: 'Em aberto',
       duration: '90 meses',
       isContemplated: true,
     ),
@@ -60,6 +63,7 @@ class MockApi {
       dueDate: '20 set.',
       status: QuotaStatus.underReview,
       installmentValue: 'R\$ 200,00',
+      nextInstallmentStatus: 'Em análise',
       duration: '36 meses',
       isContemplated: false,
     ),
@@ -73,10 +77,74 @@ class MockApi {
       dueDate: '10 set.',
       status: QuotaStatus.blocked,
       installmentValue: 'R\$ 1.150,00',
+      nextInstallmentStatus: 'Em atraso',
       duration: '180 meses',
       isContemplated: false,
     ),
   ];
+
+  static const Map<String, QuotaDetailsData> _quotaDetailsById = {
+    'property_1': QuotaDetailsData(
+      quotaId: 'property_1',
+      contractedCreditValue: 'R\$ 150.000,00',
+      currentCreditValue: 'R\$ 150.000,00',
+      duration: '240 meses',
+      updatePercentage: '+0,00%',
+      accumulatedUpdate: 'R\$ 0,00',
+      lastUpdate: '1 de setembro de 2026',
+      completedInstallments: 42,
+      totalInstallments: 240,
+      paidAmount: 'R\$ 35.385,00',
+      nextInstallmentValue: 'R\$ 842,50',
+      nextInstallmentDueDate: '15 de setembro de 2026',
+      nextInstallmentStatus: 'Pendente',
+    ),
+    'vehicle_1': QuotaDetailsData(
+      quotaId: 'vehicle_1',
+      contractedCreditValue: 'R\$ 80.000,00',
+      currentCreditValue: 'R\$ 80.000,00',
+      duration: '90 meses',
+      updatePercentage: '+0,00%',
+      accumulatedUpdate: 'R\$ 0,00',
+      lastUpdate: '1 de outubro de 2026',
+      completedInstallments: 18,
+      totalInstallments: 90,
+      paidAmount: 'R\$ 7.200,00',
+      nextInstallmentValue: 'R\$ 400,00',
+      nextInstallmentDueDate: '7 de outubro de 2026',
+      nextInstallmentStatus: 'Pendente',
+    ),
+    'services_1': QuotaDetailsData(
+      quotaId: 'services_1',
+      contractedCreditValue: 'R\$ 20.000,00',
+      currentCreditValue: 'R\$ 20.000,00',
+      duration: '36 meses',
+      updatePercentage: '+0,00%',
+      accumulatedUpdate: 'R\$ 0,00',
+      lastUpdate: '1 de setembro de 2026',
+      completedInstallments: 4,
+      totalInstallments: 36,
+      paidAmount: 'R\$ 800,00',
+      nextInstallmentValue: 'R\$ 200,00',
+      nextInstallmentDueDate: '20 de setembro de 2026',
+      nextInstallmentStatus: 'Em análise',
+    ),
+    'blocked_1': QuotaDetailsData(
+      quotaId: 'blocked_1',
+      contractedCreditValue: 'R\$ 200.000,00',
+      currentCreditValue: 'R\$ 200.000,00',
+      duration: '180 meses',
+      updatePercentage: '+0,00%',
+      accumulatedUpdate: 'R\$ 0,00',
+      lastUpdate: '1 de setembro de 2026',
+      completedInstallments: 20,
+      totalInstallments: 180,
+      paidAmount: 'R\$ 23.000,00',
+      nextInstallmentValue: 'R\$ 1.150,00',
+      nextInstallmentDueDate: '10 de setembro de 2026',
+      nextInstallmentStatus: 'Em atraso',
+    ),
+  };
 
   // Initialize
   void init() {
@@ -95,6 +163,21 @@ class MockApi {
 
   Future<List<QuotaOverview>> getQuotas() async {
     return _simulateDelay(_quotas);
+  }
+
+  Future<List<QuotaOverview>> getUpcomingDueQuotas() async {
+    final upcomingQuotas = _quotas
+        .where((quota) => quota.status == QuotaStatus.active)
+        .toList(growable: false);
+    return _simulateDelay(upcomingQuotas);
+  }
+
+  QuotaDetailsData quotaDetailsFor(String quotaId) {
+    return _quotaDetailsById[quotaId] ?? _quotaDetailsById['property_1']!;
+  }
+
+  Future<QuotaDetailsData> getQuotaDetails(String quotaId) async {
+    return _simulateDelay(quotaDetailsFor(quotaId));
   }
 
   // Installments per quota
