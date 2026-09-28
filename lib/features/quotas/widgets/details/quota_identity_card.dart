@@ -1,15 +1,14 @@
-import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
 class QuotaIdentityCard extends StatelessWidget {
-  const QuotaIdentityCard({super.key});
+  const QuotaIdentityCard({required this.quota, super.key});
+
+  final QuotaOverview quota;
 
   @override
   Widget build(BuildContext context) {
-    final quota = MockApi.instance.currentQuota.value!;
-
     IconData icon;
     if (quota.category == QuotaCategory.vehicle) {
       icon = Icons.directions_car_outlined;
@@ -56,7 +55,7 @@ class QuotaIdentityCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'Grupo    Cota ',
+                  'Grupo ${quota.group} • Cota ${quota.number}',
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,

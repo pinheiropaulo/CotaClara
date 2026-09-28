@@ -51,6 +51,8 @@ class QuotaDetailsScreen extends StatelessWidget {
       return const ServicesQuotaDetailsScreen();
     }
 
+    final details = MockApi.instance.quotaDetailsFor(quota!.id);
+
     // Otherwise show property/generic
     return Scaffold(
       bottomNavigationBar: AppBottomNavigation(
@@ -73,21 +75,38 @@ class QuotaDetailsScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
                     children: [
-                      const QuotaIdentityCard(),
+                      QuotaIdentityCard(quota: quota),
                       const SizedBox(height: 16),
-                      CreditValueCard(contractedValue: quota!.creditValue),
-                      const SizedBox(height: 16),
-                      CreditUpdateCard(
-                        contractedValue: quota.creditValue,
-                        onInfoPressed: () => showCreditUpdateInfoSheet(context),
+                      CreditValueCard(
+                        currentValue: details.currentCreditValue,
+                        contractedValue: details.contractedCreditValue,
+                        duration: details.duration,
                       ),
                       const SizedBox(height: 16),
-                      const PlanProgressCard(),
+                      CreditUpdateCard(
+                        onInfoPressed: () => showCreditUpdateInfoSheet(context),
+                        growth: details.updatePercentage,
+                        contractedValue: details.contractedCreditValue,
+                        currentValue: details.currentCreditValue,
+                        accumulatedValue: details.accumulatedUpdate,
+                        lastUpdate: details.lastUpdate,
+                      ),
+                      const SizedBox(height: 16),
+                      PlanProgressCard(
+                        headline: details.progressHeadline,
+                        progressLabel: details.progressLabel,
+                        progress: details.progress,
+                        paidValue: 'Valor pago: ${details.paidAmount}',
+                        remaining: details.remainingInstallments,
+                      ),
                       const SizedBox(height: 16),
                       DetailInstallmentCard(
                         onPayPressed: () => context.push(AppRoutes.bill),
                         onViewAllPressed: () =>
                             context.push(AppRoutes.installments),
+                        value: details.nextInstallmentValue,
+                        dueDate: details.nextInstallmentDueDate,
+                        status: details.nextInstallmentStatus,
                       ),
                       const SizedBox(height: 16),
                       AssemblyDetailCard(

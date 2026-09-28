@@ -5,11 +5,17 @@ class VehicleInstallmentCard extends StatelessWidget {
   const VehicleInstallmentCard({
     required this.onPayPressed,
     required this.onViewAllPressed,
+    required this.value,
+    required this.dueDate,
+    required this.status,
     super.key,
   });
 
   final VoidCallback onPayPressed;
   final VoidCallback onViewAllPressed;
+  final String value;
+  final String dueDate;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class VehicleInstallmentCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
@@ -35,28 +41,28 @@ class VehicleInstallmentCard extends StatelessWidget {
                   ),
                 ),
               ),
-              _InstallmentBadges(),
+              _InstallmentBadges(status: status),
             ],
           ),
           const SizedBox(height: 14),
-          const Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Vencimento em',
                       style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
                       ),
                     ),
-                    SizedBox(height: 3),
+                    const SizedBox(height: 3),
                     Text(
-                      '10 de outubro de 2026',
-                      style: TextStyle(
+                      dueDate,
+                      style: const TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -66,8 +72,8 @@ class VehicleInstallmentCard extends StatelessWidget {
                 ),
               ),
               Text(
-                'R\$ 842,36',
-                style: TextStyle(
+                value,
+                style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
@@ -99,16 +105,18 @@ class VehicleInstallmentCard extends StatelessWidget {
 }
 
 class _InstallmentBadges extends StatelessWidget {
-  const _InstallmentBadges();
+  const _InstallmentBadges({required this.status});
+
+  final String status;
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _Badge(label: 'Pendente'),
-        SizedBox(height: 5),
-        _Badge(label: 'Valor com ajuste de\nentrada', highlighted: true),
+        _Badge(label: status),
+        const SizedBox(height: 5),
+        const _Badge(label: 'Valor com ajuste de\nentrada', highlighted: true),
       ],
     );
   }

@@ -5,11 +5,17 @@ class DetailInstallmentCard extends StatelessWidget {
   const DetailInstallmentCard({
     required this.onPayPressed,
     required this.onViewAllPressed,
+    required this.value,
+    required this.dueDate,
+    required this.status,
     super.key,
   });
 
   final VoidCallback onPayPressed;
   final VoidCallback onViewAllPressed;
+  final String value;
+  final String dueDate;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,9 @@ class DetailInstallmentCard extends StatelessWidget {
         child: _InstallmentContent(
           onPayPressed: onPayPressed,
           onViewAllPressed: onViewAllPressed,
+          value: value,
+          dueDate: dueDate,
+          status: status,
         ),
       ),
     );
@@ -34,17 +43,23 @@ class _InstallmentContent extends StatelessWidget {
   const _InstallmentContent({
     required this.onPayPressed,
     required this.onViewAllPressed,
+    required this.value,
+    required this.dueDate,
+    required this.status,
   });
 
   final VoidCallback onPayPressed;
   final VoidCallback onViewAllPressed;
+  final String value;
+  final String dueDate;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
             Expanded(
               child: Text(
@@ -56,30 +71,30 @@ class _InstallmentContent extends StatelessWidget {
                 ),
               ),
             ),
-            _PendingBadge(),
+            _PendingBadge(label: status),
           ],
         ),
         const SizedBox(height: 16),
-        const Text(
-          'R\$ 842,50',
-          style: TextStyle(
+        Text(
+          value,
+          style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 32,
             fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 4),
-        const Row(
+        Row(
           children: [
-            Icon(
+            const Icon(
               Icons.calendar_today_outlined,
               color: AppColors.accentBlue,
               size: 18,
             ),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Text(
-              'Vencimento em 15 de setembro',
-              style: TextStyle(
+              'Vencimento em $dueDate',
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
               ),
@@ -117,20 +132,22 @@ class _InstallmentContent extends StatelessWidget {
 }
 
 class _PendingBadge extends StatelessWidget {
-  const _PendingBadge();
+  const _PendingBadge({required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.warningContainer,
         borderRadius: BorderRadius.all(Radius.circular(99)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         child: Text(
-          'Pendente',
-          style: TextStyle(color: AppColors.warning, fontSize: 12),
+          label,
+          style: const TextStyle(color: AppColors.warning, fontSize: 12),
         ),
       ),
     );

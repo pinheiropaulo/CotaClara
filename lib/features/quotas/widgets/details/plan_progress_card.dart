@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class PlanProgressCard extends StatelessWidget {
   const PlanProgressCard({
-    this.headline = '42 de 180 parcelas',
-    this.progressLabel = '23% concluído',
-    this.progress = 0.23,
-    this.paidValue = 'Valor pago: R\$ 19.840,00',
-    this.remaining = 'Restam 138 parcelas',
+    required this.headline,
+    required this.progressLabel,
+    required this.progress,
+    required this.paidValue,
+    required this.remaining,
     super.key,
   });
 

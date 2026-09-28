@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class CreditValueCard extends StatefulWidget {
   const CreditValueCard({
-    this.currentValue = 'R\$ 84.280,00',
-    this.contractedValue = 'R\$ 80.000,00',
-    this.duration = '180 meses',
+    required this.currentValue,
+    required this.contractedValue,
+    required this.duration,
     super.key,
   });
 

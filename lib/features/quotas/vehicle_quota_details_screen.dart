@@ -44,6 +44,7 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final quota = MockApi.instance.currentQuota.value!;
+    final details = MockApi.instance.quotaDetailsFor(quota.id);
     return Scaffold(
       bottomNavigationBar: AppBottomNavigation(
         currentIndex: 1,
@@ -73,33 +74,26 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                       const VehicleQuotaIdentityCard(),
                       const SizedBox(height: 16),
                       CreditValueCard(
-                        contractedValue: quota.creditValue,
+                        currentValue: details.currentCreditValue,
+                        contractedValue: details.contractedCreditValue,
+                        duration: details.duration,
                       ),
                       const SizedBox(height: 16),
                       CreditUpdateCard(
                         onInfoPressed: () => showCreditUpdateInfoSheet(context),
-                        contractedValue: quota.creditValue,
+                        growth: details.updatePercentage,
+                        contractedValue: details.contractedCreditValue,
+                        currentValue: details.currentCreditValue,
+                        accumulatedValue: details.accumulatedUpdate,
+                        lastUpdate: details.lastUpdate,
                       ),
                       const SizedBox(height: 16),
-                      CreditValueCard(
-                        currentValue: 'R\$ 80.000,00',
-                        duration: '120 meses',
-                      ),
-                      const SizedBox(height: 16),
-                      CreditUpdateCard(
-                        onInfoPressed: () => showCreditUpdateInfoSheet(context),
-                        growth: '+0,00%',
-                        currentValue: 'R\$ 80.000,00',
-                        accumulatedValue: 'R\$ 0,00',
-                        lastUpdate: '1 de outubro de 2026',
-                      ),
-                      const SizedBox(height: 16),
-                      const PlanProgressCard(
-                        headline: '18ª assembleia de 120',
-                        progressLabel: '15% concluído',
-                        progress: 0.15,
-                        paidValue: 'Valor pago: R\$ 14.320,00',
-                        remaining: '103 parcelas restantes',
+                      PlanProgressCard(
+                        headline: details.progressHeadline,
+                        progressLabel: details.progressLabel,
+                        progress: details.progress,
+                        paidValue: 'Valor pago: ${details.paidAmount}',
+                        remaining: details.remainingInstallments,
                       ),
                       const SizedBox(height: 16),
                       AdjustedInstallmentNotice(
@@ -111,6 +105,9 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                         onPayPressed: () => context.push(AppRoutes.bill),
                         onViewAllPressed: () =>
                             context.push(AppRoutes.installments),
+                        value: details.nextInstallmentValue,
+                        dueDate: details.nextInstallmentDueDate,
+                        status: details.nextInstallmentStatus,
                       ),
                       const SizedBox(height: 16),
                       AssemblyDetailCard(

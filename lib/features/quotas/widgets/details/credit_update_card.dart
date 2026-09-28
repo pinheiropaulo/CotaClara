@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class CreditUpdateCard extends StatelessWidget {
   const CreditUpdateCard({
     required this.onInfoPressed,
-    this.growth = '+5,35%',
-    this.contractedValue = 'R\$ 80.000,00',
-    this.currentValue = 'R\$ 84.280,00',
-    this.accumulatedValue = '+ R\$ 4.280,00',
-    this.lastUpdate = '1 de setembro de 2026',
+    required this.growth,
+    required this.contractedValue,
+    required this.currentValue,
+    required this.accumulatedValue,
+    required this.lastUpdate,
     super.key,
   });
 
