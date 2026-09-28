@@ -21,7 +21,7 @@ class ServicesQuotaDetailsScreen extends StatelessWidget {
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(' será implementado em uma próxima etapa.'),
+        content: Text('$feature será implementado em uma próxima etapa.'),
       ),
     );
   }

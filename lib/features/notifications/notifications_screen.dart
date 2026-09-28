@@ -1,5 +1,5 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
-import 'package:cota_clara/features/notifications/data/mock_notifications.dart';
 import 'package:cota_clara/features/notifications/models/notification_item.dart';
 import 'package:cota_clara/features/notifications/widgets/notification_card.dart';
 import 'package:cota_clara/features/notifications/widgets/notification_filters_bar.dart';
@@ -15,48 +15,54 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  late List<NotificationGroup> _groups;
-  String _selectedFilter = 'Todas';
+  List<NotificationGroup>? _notifications;
 
   @override
   void initState() {
     super.initState();
-    _groups = List.from(mockNotifications);
+    _load();
+  }
+
+  Future<void> _load() async {
+    final n = await MockApi.instance.getNotifications();
+    if (mounted) {
+      setState(() {
+        _notifications = n;
+      });
+    }
+  }
+
+  String _selectedFilter = 'Tudo';
+
+  void _markAllAsRead() {
+    _showComingSoon('Marcar todas como lidas');
   }
 
   int get _unreadCount {
-    int count = 0;
-    for (final group in _groups) {
-      count += group.items
-          .where((i) => i.status == NotificationStatus.unread)
-          .length;
-    }
-    return count;
-  }
-
-  void _markAllAsRead() {
-    setState(() {
-      _groups = _groups.map((group) {
-        return NotificationGroup(
-          title: group.title,
-          items: group.items.map((item) {
-            return item.copyWith(status: NotificationStatus.read);
-          }).toList(),
-        );
-      }).toList();
-    });
+    if (_notifications == null) return 0;
+    return _notifications!.fold(
+      0,
+      (total, group) =>
+          total +
+          group.items
+              .where((i) => i.status == NotificationStatus.unread)
+              .length,
+    );
   }
 
   void _showComingSoon(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$feature será implementado em uma próxima etapa.'),
-      ),
+      SnackBar(content: Text(' será implementado em uma próxima etapa.')),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_notifications == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -141,7 +147,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   List<Widget> _buildGroupList() {
     final List<Widget> widgets = [];
-    for (final group in _groups) {
+    for (final group in _notifications!) {
       final items = group.items.where((item) {
         if (_selectedFilter == 'Não lidas') {
           return item.status == NotificationStatus.unread;

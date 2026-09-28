@@ -13,6 +13,7 @@ import 'package:cota_clara/features/profile/profile_screen.dart';
 import 'package:cota_clara/features/quotas/credit_release_screen.dart';
 import 'package:cota_clara/features/quotas/quota_details_screen.dart';
 import 'package:cota_clara/features/quotas/quotas_screen.dart';
+import 'package:cota_clara/features/quotas/services_quota_details_screen.dart';
 import 'package:cota_clara/features/quotas/statement_screen.dart';
 import 'package:cota_clara/features/quotas/vehicle_quota_details_screen.dart';
 import 'package:cota_clara/features/services/services_screen.dart';
@@ -74,6 +75,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.vehicleQuotaDetails,
       builder: (context, state) => const VehicleQuotaDetailsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.servicesQuotaDetails,
+      builder: (context, state) => const ServicesQuotaDetailsScreen(),
     ),
     GoRoute(
       path: AppRoutes.installments,

@@ -12,6 +12,7 @@ abstract final class AppRoutes {
   static const creditRelease = '/quotas/credit-release';
   static const quotaDetails = '/quota-details';
   static const vehicleQuotaDetails = '/vehicle-quota-details';
+  static const servicesQuotaDetails = '/services-quota-details';
   static const installments = '/installments';
   static const bill = '/bill';
   static const assemblies = '/assemblies';

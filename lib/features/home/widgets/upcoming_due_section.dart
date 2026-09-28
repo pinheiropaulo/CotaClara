@@ -59,7 +59,7 @@ class UpcomingDueSection extends StatelessWidget {
                 status: 'Pendente',
                 statusColor: AppColors.warning,
                 statusBackground: AppColors.warningContainer,
-                onPressed: () => onDuePressed('Cota de imóvel'),
+                onPressed: () => onDuePressed('property_1'),
               ),
               const Divider(height: 1, color: AppColors.border),
               _UpcomingDueItem(
@@ -69,7 +69,7 @@ class UpcomingDueSection extends StatelessWidget {
                 status: 'Em aberto',
                 statusColor: AppColors.accentBlue,
                 statusBackground: Color(0xFF1D4054),
-                onPressed: () => onDuePressed('Consórcio de veículo'),
+                onPressed: () => onDuePressed('vehicle_1'),
               ),
             ],
           ),

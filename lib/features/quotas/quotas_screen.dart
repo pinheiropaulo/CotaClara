@@ -111,17 +111,16 @@ class _QuotasScreenState extends State<QuotasScreen> {
                         QuotaOverviewCard(
                           quota: quotas[index],
                           onPressed: () {
-                            if (quotas[index].category ==
-                                QuotaCategory.property) {
-                              context.push(AppRoutes.quotaDetails);
-                              return;
-                            }
+                            MockApi.instance.selectQuota(quotas[index].id);
                             if (quotas[index].category ==
                                 QuotaCategory.vehicle) {
                               context.push(AppRoutes.vehicleQuotaDetails);
-                              return;
+                            } else if (quotas[index].category ==
+                                QuotaCategory.services) {
+                              context.push(AppRoutes.servicesQuotaDetails);
+                            } else {
+                              context.push(AppRoutes.quotaDetails);
                             }
-                            _showComingSoon('Detalhes desta cota');
                           },
                         ),
                         if (index < quotas.length - 1)

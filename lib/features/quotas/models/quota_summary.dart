@@ -40,9 +40,9 @@ class QuotaSummary {
     if (total == 0) return 'Nenhuma cota';
 
     return [
-      if (active > 0) ' ',
-      if (underReview > 0) ' em análise',
-      if (blocked > 0) ' bloqueada',
+      if (active > 0) '$active ${active == 1 ? 'ativa' : 'ativas'}',
+      if (underReview > 0) '$underReview em análise',
+      if (blocked > 0) '$blocked bloqueada${blocked == 1 ? '' : 's'}',
     ].join(' • ');
   }
 }

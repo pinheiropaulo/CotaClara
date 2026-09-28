@@ -76,19 +76,6 @@ class MockApi {
       duration: '180 meses',
       isContemplated: false,
     ),
-    QuotaOverview(
-      id: 'blocked_1',
-      category: QuotaCategory.property,
-      title: 'Cota de imóvel (Em atraso)',
-      group: '020400',
-      number: '9901',
-      creditValue: 'R\$ 200.000,00',
-      dueDate: '10 set.',
-      status: QuotaStatus.blocked,
-      installmentValue: 'R\$ 1.150,00',
-      duration: '180 meses',
-      isContemplated: false,
-    ),
   ];
 
   // Initialize
@@ -226,11 +213,15 @@ class MockApi {
 
   // Bill
   Future<Bill> getBill(String quotaId) async {
-    final data = const Bill(
+    final quota = _quotas.firstWhere(
+      (q) => q.id == quotaId,
+      orElse: () => _quotas.first,
+    );
+    final data = Bill(
       month: 'setembro',
-      value: 'R\$ 842,50',
-      dueDate: '15 de setembro de 2026',
-      installment: '42 de 180',
+      value: quota.installmentValue,
+      dueDate: '${quota.dueDate} de 2026',
+      installment: '42 de ${quota.duration.split(' ')[0]}',
       displayCode: '00190.00009 01234.567891\n23456.789012 3\n12340000084250',
       copyCode: '00190000090123456789123456789012312340000084250',
     );
