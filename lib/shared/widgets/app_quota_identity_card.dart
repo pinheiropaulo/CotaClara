@@ -2,8 +2,8 @@ import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:flutter/material.dart';
 
-class QuotaIdentityCard extends StatelessWidget {
-  const QuotaIdentityCard({required this.quota, super.key});
+class AppQuotaIdentityCard extends StatelessWidget {
+  const AppQuotaIdentityCard({required this.quota, super.key});
 
   final QuotaOverview quota;
 

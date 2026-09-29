@@ -13,8 +13,8 @@ import 'package:cota_clara/features/quotas/widgets/details/quota_info_tile.dart'
 import 'package:cota_clara/features/quotas/widgets/details/vehicle/adjusted_installment_notice.dart';
 import 'package:cota_clara/features/quotas/widgets/details/vehicle/contract_documents_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/vehicle/vehicle_installment_card.dart';
-import 'package:cota_clara/features/quotas/widgets/details/vehicle/vehicle_quota_identity_card.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
+import 'package:cota_clara/shared/widgets/app_quota_identity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -71,7 +71,7 @@ class VehicleQuotaDetailsScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
                     children: [
-                      const VehicleQuotaIdentityCard(),
+                      AppQuotaIdentityCard(quota: quota),
                       const SizedBox(height: 16),
                       CreditValueCard(
                         currentValue: details.currentCreditValue,

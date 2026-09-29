@@ -9,9 +9,9 @@ import 'package:cota_clara/features/quotas/widgets/details/credit_value_card.dar
 import 'package:cota_clara/features/quotas/widgets/details/detail_installment_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/plan_progress_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/quota_details_top_bar.dart';
-import 'package:cota_clara/features/quotas/widgets/details/quota_identity_card.dart';
 import 'package:cota_clara/features/quotas/widgets/details/quota_info_tile.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
+import 'package:cota_clara/shared/widgets/app_quota_identity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,7 +63,7 @@ class ServicesQuotaDetailsScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
                     children: [
-                      QuotaIdentityCard(quota: quota),
+                      AppQuotaIdentityCard(quota: quota),
                       const SizedBox(height: 16),
                       CreditValueCard(
                         currentValue: details.currentCreditValue,
