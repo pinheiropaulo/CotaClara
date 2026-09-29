@@ -2,18 +2,17 @@ import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:cota_clara/features/installments/models/installment.dart';
+import 'package:cota_clara/features/installments/widgets/empty_installments.dart';
 import 'package:cota_clara/features/installments/widgets/installment_card.dart';
 import 'package:cota_clara/features/installments/widgets/installment_filters.dart';
 import 'package:cota_clara/features/installments/widgets/installment_plan_summary.dart';
+import 'package:cota_clara/features/installments/widgets/installments_list_header.dart';
 import 'package:cota_clara/features/installments/widgets/next_installment_highlight.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_bottom_sheet.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'installments_list_header.dart';
-import 'empty_installments.dart';
 
 class InstallmentsListView extends StatelessWidget {
   final bool isLoading;

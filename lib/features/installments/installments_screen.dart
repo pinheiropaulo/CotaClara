@@ -2,7 +2,6 @@ import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_navigation.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/features/installments/models/installment.dart';
-import 'package:cota_clara/features/installments/widgets/installment_filters.dart';
 import 'package:cota_clara/features/installments/widgets/installments_list_view.dart';
 import 'package:cota_clara/shared/widgets/app_task_top_bar.dart';
 import 'package:flutter/material.dart';

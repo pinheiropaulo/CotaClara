@@ -28,7 +28,8 @@ As imagens anteriores em `../stitch_cotaclara` são apenas uma referência hist�
 - Parcelas;
 - Boleto da parcela;
 - Assembleias;
-- Detalhes da assembleia.
+- Detalhes da assembleia;
+- Lances (Modalidades de Lance, Configurar Lance e Revisar Lance alinhados com o novo padrão visual).
 
 As telas usam dados simulados e podem ter ações que exibem uma `SnackBar` de “próxima etapa”. Isso é aceitável enquanto a tela de destino ainda não existir.
 

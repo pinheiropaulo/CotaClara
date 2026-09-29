@@ -1,9 +1,9 @@
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/settings/widgets/notifications_section.dart';
+import 'package:cota_clara/features/settings/widgets/preferences_section.dart';
+import 'package:cota_clara/features/settings/widgets/privacy_section.dart';
 import 'package:cota_clara/features/settings/widgets/security_banner.dart';
 import 'package:cota_clara/features/settings/widgets/security_section.dart';
-import 'package:cota_clara/features/settings/widgets/notifications_section.dart';
-import 'package:cota_clara/features/settings/widgets/privacy_section.dart';
-import 'package:cota_clara/features/settings/widgets/preferences_section.dart';
 import 'package:cota_clara/shared/widgets/app_task_top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

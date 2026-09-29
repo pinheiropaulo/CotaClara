@@ -1,6 +1,8 @@
+import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/routes/app_navigation.dart';
 import 'package:cota_clara/app/routes/app_routes.dart';
-import 'package:cota_clara/features/assemblies/data/mock_assemblies.dart';
+import 'package:cota_clara/features/assemblies/models/assembly_history.dart';
+import 'package:cota_clara/features/assemblies/models/next_assembly_data.dart';
 import 'package:cota_clara/features/assemblies/widgets/assembly_bid_card.dart';
 import 'package:cota_clara/features/assemblies/widgets/assembly_history_section.dart';
 import 'package:cota_clara/features/assemblies/widgets/assembly_notification_notice.dart';
@@ -20,14 +22,18 @@ class AssembliesScreen extends StatefulWidget {
 }
 
 class _AssembliesScreenState extends State<AssembliesScreen> {
-  QuotaOverview? _selectedQuota;
-
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('$feature será implementado em uma próxima etapa.'),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    MockApi.instance.init();
   }
 
   @override
@@ -46,53 +52,87 @@ class _AssembliesScreenState extends State<AssembliesScreen> {
                       _showComingSoon(context, 'Ajuda sobre assembleias'),
                 ),
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-                    children: [
-                      QuotaSelectionCard(
-                        title: _selectedQuota?.title ?? 'Cota de imóvel',
-                        description: _selectedQuota != null
-                            ? 'Grupo ${_selectedQuota!.group} • Cota ${_selectedQuota!.number}'
-                            : 'Grupo 012160 • Cota 6503',
-                        icon: _selectedQuota?.category == QuotaCategory.vehicle
-                            ? Icons.directions_car_outlined
-                            : _selectedQuota?.category == QuotaCategory.services
-                            ? Icons.handyman_outlined
-                            : Icons.home_outlined,
-                        onPressed: () async {
-                          final quota = await QuotaSelectionBottomSheet.show(
-                            context,
-                          );
-                          if (quota != null) {
-                            setState(() => _selectedQuota = quota);
+                  child: ValueListenableBuilder<QuotaOverview?>(
+                    valueListenable: MockApi.instance.currentQuota,
+                    builder: (context, currentQuota, child) {
+                      if (currentQuota == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      return FutureBuilder(
+                        future: Future.wait([
+                          MockApi.instance.getNextAssembly(currentQuota.id),
+                          MockApi.instance.getAssemblyHistory(currentQuota.id),
+                        ]),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           }
+
+                          final nextAssembly =
+                              snapshot.data![0] as NextAssemblyData;
+                          final assemblyHistory =
+                              snapshot.data![1] as List<AssemblyHistory>;
+
+                          return ListView(
+                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+                            children: [
+                              QuotaSelectionCard(
+                                title: currentQuota.title,
+                                description:
+                                    'Grupo ${currentQuota.group} • Cota ${currentQuota.number}',
+                                icon:
+                                    currentQuota.category ==
+                                        QuotaCategory.vehicle
+                                    ? Icons.directions_car_outlined
+                                    : currentQuota.category ==
+                                          QuotaCategory.services
+                                    ? Icons.handyman_outlined
+                                    : Icons.home_outlined,
+                                onPressed: () async {
+                                  final quota =
+                                      await QuotaSelectionBottomSheet.show(
+                                        context,
+                                      );
+                                  if (quota != null) {
+                                    MockApi.instance.selectQuota(quota.id);
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              NextAssemblyCard(
+                                data: nextAssembly,
+                                onDetailsPressed: () =>
+                                    context.push(AppRoutes.assemblyDetails),
+                              ),
+                              const SizedBox(height: 24),
+                              AssemblyBidCard(
+                                onPressed: () => _showComingSoon(
+                                  context,
+                                  'Acompanhamento do lance',
+                                ),
+                              ),
+                              const SizedBox(height: 28),
+                              AssemblyHistorySection(
+                                items: assemblyHistory,
+                                onItemPressed: (assembly) => _showComingSoon(
+                                  context,
+                                  'Resultado de ${assembly.date}',
+                                ),
+                                onViewAllPressed: () => _showComingSoon(
+                                  context,
+                                  'Histórico completo de assembleias',
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              const AssemblyNotificationNotice(),
+                            ],
+                          );
                         },
-                      ),
-                      const SizedBox(height: 24),
-                      NextAssemblyCard(
-                        onDetailsPressed: () =>
-                            context.push(AppRoutes.assemblyDetails),
-                      ),
-                      const SizedBox(height: 24),
-                      AssemblyBidCard(
-                        onPressed: () =>
-                            _showComingSoon(context, 'Acompanhamento do lance'),
-                      ),
-                      const SizedBox(height: 28),
-                      AssemblyHistorySection(
-                        items: mockAssemblyHistory,
-                        onItemPressed: (assembly) => _showComingSoon(
-                          context,
-                          'Resultado de ${assembly.date}',
-                        ),
-                        onViewAllPressed: () => _showComingSoon(
-                          context,
-                          'Histórico completo de assembleias',
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      const AssemblyNotificationNotice(),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],

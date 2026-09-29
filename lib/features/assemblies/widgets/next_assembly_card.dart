@@ -1,10 +1,16 @@
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/assemblies/models/next_assembly_data.dart';
 import 'package:flutter/material.dart';
 
 class NextAssemblyCard extends StatelessWidget {
-  const NextAssemblyCard({required this.onDetailsPressed, super.key});
-
   final VoidCallback onDetailsPressed;
+  final NextAssemblyData data;
+
+  const NextAssemblyCard({
+    required this.onDetailsPressed,
+    required this.data,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +38,15 @@ class NextAssemblyCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.event_outlined,
                       color: AppColors.accentBlue,
                       size: 20,
                     ),
-                    SizedBox(width: 8),
-                    Expanded(
+                    const SizedBox(width: 8),
+                    const Expanded(
                       child: Text(
                         'PRÓXIMA ASSEMBLEIA',
                         style: TextStyle(
@@ -51,28 +57,28 @@ class NextAssemblyCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    _ScheduledBadge(),
+                    if (data.isScheduled) const _ScheduledBadge(),
                   ],
                 ),
                 const SizedBox(height: 24),
-                const Wrap(
+                Wrap(
                   crossAxisAlignment: WrapCrossAlignment.end,
                   spacing: 8,
                   runSpacing: 4,
                   children: [
                     Text(
-                      '25 de setembro',
-                      style: TextStyle(
+                      data.date,
+                      style: const TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 4),
+                      padding: const EdgeInsets.only(bottom: 4),
                       child: Text(
-                        '• 19h',
-                        style: TextStyle(
+                        ' às ${data.time}',
+                        style: const TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -93,18 +99,18 @@ class NextAssemblyCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.border),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.schedule,
                         color: AppColors.warning,
                         size: 18,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Ofertas de lance até 24 de setembro, às 18h',
-                          style: TextStyle(
+                          'Ofertas de lance até ${data.bidDeadlineDate}, às ${data.bidDeadlineTime}',
+                          style: const TextStyle(
                             color: AppColors.warning,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
