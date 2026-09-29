@@ -1,8 +1,15 @@
+import 'package:cota_clara/app/data/mock_api.dart';
+import 'package:cota_clara/features/bids/models/bid_history_item.dart';
 import 'package:flutter/material.dart';
 
 class QuotaTrackingSection extends StatelessWidget {
-  const QuotaTrackingSection({required this.onBidPressed, super.key});
+  const QuotaTrackingSection({
+    required this.quotaId,
+    required this.onBidPressed,
+    super.key,
+  });
 
+  final String quotaId;
   final VoidCallback onBidPressed;
 
   @override
@@ -25,7 +32,12 @@ class QuotaTrackingSection extends StatelessWidget {
             children: [
               const Expanded(child: _AssemblyCard()),
               const SizedBox(width: 12),
-              Expanded(child: _BidCard(onPressed: onBidPressed)),
+              Expanded(
+                child: _BidCard(
+                  quotaId: quotaId,
+                  onPressed: onBidPressed,
+                ),
+              ),
             ],
           ),
         ),
@@ -58,37 +70,60 @@ class _AssemblyCard extends StatelessWidget {
 }
 
 class _BidCard extends StatelessWidget {
-  const _BidCard({required this.onPressed});
+  const _BidCard({
+    required this.quotaId,
+    required this.onPressed,
+  });
 
+  final String quotaId;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return _TrackingCard(
-      icon: Icons.gavel_outlined,
-      title: 'Lance',
-      description: 'Nenhum lance ativo',
-      footer: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(8),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            children: [
-              Text(
-                'Ofertar lance',
-                style: TextStyle(
-                  color: Color(0xFF4FC6B6),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
+    return FutureBuilder<List<BidHistoryItem>>(
+      future: MockApi.instance.getBidHistory(quotaId),
+      builder: (context, snapshot) {
+        String description = 'Nenhum lance ativo';
+        Color descColor = const Color(0xFFAAB7C2); // default text secondary
+
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final lastBid = snapshot.data!.first;
+          description = lastBid.status;
+          if (lastBid.status == 'Em análise') {
+            descColor = const Color(0xFFF5B041); // Warning orange
+          } else if (lastBid.status == 'Contemplado') {
+            descColor = const Color(0xFF63C79D); // Success green
+          }
+        }
+
+        return _TrackingCard(
+          icon: Icons.gavel_outlined,
+          title: 'Lance',
+          description: description,
+          descriptionColor: descColor,
+          footer: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(8),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Text(
+                    'Ofertar lance',
+                    style: TextStyle(
+                      color: Color(0xFF4FC6B6),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Icon(Icons.chevron_right, color: Color(0xFF4FC6B6), size: 18),
+                ],
               ),
-              SizedBox(width: 2),
-              Icon(Icons.chevron_right, color: Color(0xFF4FC6B6), size: 18),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -99,12 +134,14 @@ class _TrackingCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.footer,
+    this.descriptionColor = const Color(0xFFAAB7C2),
   });
 
   final IconData icon;
   final String title;
   final String description;
   final Widget footer;
+  final Color descriptionColor;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +178,7 @@ class _TrackingCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             description,
-            style: const TextStyle(color: Color(0xFFAAB7C2), fontSize: 14),
+            style: TextStyle(color: descriptionColor, fontSize: 14),
           ),
           const Spacer(),
           footer,

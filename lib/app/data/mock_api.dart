@@ -1,6 +1,11 @@
+import 'package:cota_clara/features/assemblies/models/assembly_history.dart';
+import 'package:cota_clara/features/assemblies/models/next_assembly_data.dart';
+import 'package:cota_clara/features/bids/models/bid_config.dart';
+import 'package:cota_clara/features/bids/models/bid_history_item.dart';
 import 'package:cota_clara/features/billing/models/bill.dart';
 import 'package:cota_clara/features/installments/models/installment.dart';
 import 'package:cota_clara/features/notifications/models/notification_item.dart';
+import 'package:cota_clara/features/profile/models/user_profile.dart';
 import 'package:cota_clara/features/quotas/models/quota_details_data.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/features/quotas/models/statement_entry.dart';
@@ -61,9 +66,9 @@ class MockApi {
       number: '1389',
       creditValue: 'R\$ 20.000,00',
       dueDate: '20 set.',
-      status: QuotaStatus.underReview,
+      status: QuotaStatus.active,
       installmentValue: 'R\$ 200,00',
-      nextInstallmentStatus: 'Em análise',
+      nextInstallmentStatus: 'Pago',
       duration: '36 meses',
       isContemplated: false,
     ),
@@ -127,7 +132,7 @@ class MockApi {
       paidAmount: 'R\$ 800,00',
       nextInstallmentValue: 'R\$ 200,00',
       nextInstallmentDueDate: '20 de setembro de 2026',
-      nextInstallmentStatus: 'Em análise',
+      nextInstallmentStatus: 'Pago',
     ),
     'blocked_1': QuotaDetailsData(
       quotaId: 'blocked_1',
@@ -307,6 +312,137 @@ class MockApi {
       installment: '42 de ${quota.duration.split(' ')[0]}',
       displayCode: '00190.00009 01234.567891\n23456.789012 3\n12340000084250',
       copyCode: '00190000090123456789123456789012312340000084250',
+    );
+    return _simulateDelay(data);
+  }
+
+  // User Profile
+  Future<UserProfile> getUserProfile() async {
+    const profile = UserProfile(
+      firstName: 'João',
+      fullName: 'João Silva',
+      email: 'joao.silva@email.com',
+      document: '123.456.789-00',
+      phone: '(11) 98765-4321',
+    );
+    return _simulateDelay(profile);
+  }
+
+  // Assemblies
+  Future<NextAssemblyData> getNextAssembly(String quotaId) async {
+    const data = NextAssemblyData(
+      date: '25 de setembro',
+      time: '19h',
+      bidDeadlineDate: '24 de setembro',
+      bidDeadlineTime: '18h',
+      isScheduled: true,
+    );
+    return _simulateDelay(data);
+  }
+
+  Future<List<AssemblyHistory>> getAssemblyHistory(String quotaId) async {
+    const history = [
+      AssemblyHistory(
+        date: '25 de agosto de 2026',
+        result: 'Cota não contemplada',
+      ),
+      AssemblyHistory(
+        date: '25 de julho de 2026',
+        result: 'Cota não contemplada',
+      ),
+      AssemblyHistory(
+        date: '25 de junho de 2026',
+        result: 'Cota não contemplada',
+      ),
+    ];
+    return _simulateDelay(history);
+  }
+
+  // Bids Config
+  // Bids History
+  final Map<String, List<BidHistoryItem>> _bidsHistory = {
+    'property_1': [
+      BidHistoryItem(
+        id: '1',
+        date: '15/09/2026',
+        title: 'Lance Fixo 40%',
+        amount: 60000.0,
+        status: 'Em análise',
+      ),
+      BidHistoryItem(
+        id: '2',
+        date: '15/08/2026',
+        title: 'Lance Livre 18%',
+        amount: 27000.0,
+        status: 'Não contemplado',
+      ),
+    ],
+    'vehicle_1': [
+      BidHistoryItem(
+        id: '3',
+        date: '01/09/2026',
+        title: 'Lance Livre 25%',
+        amount: 20000.0,
+        status: 'Não contemplado',
+      ),
+    ],
+    'services_1': [],
+  };
+
+  Future<List<BidHistoryItem>> getBidHistory(String quotaId) async {
+    return _simulateDelay(_bidsHistory[quotaId] ?? []);
+  }
+
+  Future<void> addBid(String quotaId, BidConfig config) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final newBid = BidHistoryItem(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      date: 'Hoje',
+      title: config.modality == 'Lance Fixo'
+          ? 'Lance Fixo ${config.percentage.toInt()}%'
+          : 'Lance Livre ${config.percentage.toInt()}%',
+      amount: config.amount,
+      status: 'Em análise',
+    );
+    if (!_bidsHistory.containsKey(quotaId)) {
+      _bidsHistory[quotaId] = [];
+    }
+    _bidsHistory[quotaId]!.insert(0, newBid);
+  }
+
+  Future<BidConfig> getInitialBidConfig(String quotaId) async {
+    final quota = _quotas.firstWhere(
+      (q) => q.id == quotaId,
+      orElse: () => _quotas.first,
+    );
+    // Parse the credit value string (e.g. "R$ 150.000,00" -> 150000.0)
+    final valueStr = quota.creditValue
+        .replaceAll('R\$ ', '')
+        .replaceAll('.', '')
+        .replaceAll(',', '.');
+    final creditValue = double.tryParse(valueStr) ?? 80000.0;
+
+    // Regra de negcio para Lance Fixo:
+    // - Imvel: 100%
+    // - Veiculos / Servios: 25%
+    final maxEmbedded = quota.category == QuotaCategory.property ? 100.0 : 25.0;
+
+    final amount = creditValue * 0.4;
+    final embeddedAmount = amount > (amount * maxEmbedded / 100)
+        ? (amount * maxEmbedded / 100)
+        : amount;
+    final ownResourcesAmount = amount - embeddedAmount;
+
+    final data = BidConfig(
+      modality: 'Lance Fixo',
+      percentage: 40.0,
+      amount: amount,
+      creditAmount: creditValue,
+      quotaIdentifier: 'Cota ${quota.number} • Grupo ${quota.group}',
+      paymentMethod: 'lance_embutido',
+      embeddedAmount: embeddedAmount,
+      ownResourcesAmount: ownResourcesAmount,
+      maxEmbeddedPercentageOfBid: maxEmbedded,
     );
     return _simulateDelay(data);
   }

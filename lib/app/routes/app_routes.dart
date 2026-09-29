@@ -18,6 +18,8 @@ abstract final class AppRoutes {
   static const assemblies = '/assemblies';
   static const assemblyDetails = '/assembly-details';
   static const bidOffer = '/bid-offer';
+  static const bidConfigure = '/bid-configure';
   static const bidReview = '/bid-review';
   static const bidSuccess = '/bid-success';
+  static const myBids = '/my-bids';
 }

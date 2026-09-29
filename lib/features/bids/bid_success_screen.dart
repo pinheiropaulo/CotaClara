@@ -1,10 +1,14 @@
 import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
+import 'package:cota_clara/features/bids/models/bid_config.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class BidSuccessScreen extends StatelessWidget {
-  const BidSuccessScreen({super.key});
+  final BidConfig? config;
+
+  const BidSuccessScreen({super.key, this.config});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +66,14 @@ class BidSuccessScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          'R\$ 12.000,00',
-                          style: TextStyle(
+                        Text(
+                          config != null
+                              ? NumberFormat.currency(
+                                  locale: 'pt_BR',
+                                  symbol: 'R\$',
+                                ).format(config!.amount)
+                              : 'R\$ 32.000,00',
+                          style: const TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 32,
                             fontWeight: FontWeight.w700,
@@ -83,7 +92,9 @@ class BidSuccessScreen extends StatelessWidget {
                             children: [
                               _DetailRow(
                                 label: 'Cota',
-                                value: 'Grupo 012160 • Cota 6503',
+                                value:
+                                    config?.quotaIdentifier ??
+                                    'Grupo 012160 • Cota 6503',
                               ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 12),

@@ -1,14 +1,17 @@
+import 'package:cota_clara/features/profile/models/user_profile.dart';
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
+  final UserProfile? userProfile;
+  final VoidCallback onNotificationsPressed;
+  final VoidCallback onProfilePressed;
+
   const HomeHeader({
+    this.userProfile,
     required this.onNotificationsPressed,
     required this.onProfilePressed,
     super.key,
   });
-
-  final VoidCallback onNotificationsPressed;
-  final VoidCallback onProfilePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,20 +19,20 @@ class HomeHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Olá, Paulo',
-                  style: TextStyle(
+                  'Olá, ${userProfile?.firstName ?? ''}',
+                  style: const TextStyle(
                     color: Color(0xFFF1F5F8),
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 2),
-                Text(
+                const SizedBox(height: 2),
+                const Text(
                   'Acompanhe seu consórcio',
                   style: TextStyle(color: Color(0xFFAAB7C2), fontSize: 14),
                 ),

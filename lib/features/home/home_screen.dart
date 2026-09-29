@@ -7,6 +7,7 @@ import 'package:cota_clara/features/home/widgets/quick_access_section.dart';
 import 'package:cota_clara/features/home/widgets/quota_selector.dart';
 import 'package:cota_clara/features/home/widgets/quota_tracking_section.dart';
 import 'package:cota_clara/features/home/widgets/upcoming_due_section.dart';
+import 'package:cota_clara/features/profile/models/user_profile.dart';
 import 'package:cota_clara/features/quotas/models/quota_overview.dart';
 import 'package:cota_clara/shared/widgets/app_bottom_navigation.dart';
 import 'package:cota_clara/shared/widgets/quota_selection_bottom_sheet.dart';
@@ -22,12 +23,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<QuotaOverview> _upcomingDueQuotas = [];
+  UserProfile? _userProfile;
 
   @override
   void initState() {
     super.initState();
     MockApi.instance.currentQuota.addListener(_onQuotaChanged);
     _loadUpcomingDueQuotas();
+    _loadUserProfile();
   }
 
   @override
@@ -44,6 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final quotas = await MockApi.instance.getUpcomingDueQuotas();
     if (!mounted) return;
     setState(() => _upcomingDueQuotas = quotas);
+  }
+
+  Future<void> _loadUserProfile() async {
+    final profile = await MockApi.instance.getUserProfile();
+    if (!mounted) return;
+    setState(() => _userProfile = profile);
   }
 
   void _showComingSoon(BuildContext context, String feature) {
@@ -68,10 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
           if (index == 0) return;
           if (index == 1) {
             context.go(AppRoutes.quotas);
-            return;
+          } else if (index == 2) {
+            context.go(AppRoutes.services);
+          } else if (index == 3) {
+            context.go(AppRoutes.profile);
           }
-          const destinations = ['Início', 'Cotas', 'Serviços', 'Perfil'];
-          _showComingSoon(context, destinations[index]);
         },
       ),
       body: SafeArea(
@@ -83,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
               slivers: [
                 SliverToBoxAdapter(
                   child: HomeHeader(
+                    userProfile: _userProfile,
                     onNotificationsPressed: () =>
                         context.push(AppRoutes.notifications),
                     onProfilePressed: () => _showComingSoon(context, 'Perfil'),
@@ -122,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 30),
                       QuotaTrackingSection(
+                        quotaId: MockApi.instance.currentQuota.value?.id ?? '',
                         onBidPressed: () => context.push(AppRoutes.bidOffer),
                       ),
                       const SizedBox(height: 30),

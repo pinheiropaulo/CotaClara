@@ -2,9 +2,12 @@ import 'package:cota_clara/app/routes/app_routes.dart';
 import 'package:cota_clara/features/assemblies/assemblies_screen.dart';
 import 'package:cota_clara/features/assemblies/assembly_details_screen.dart';
 import 'package:cota_clara/features/auth/login_screen.dart';
+import 'package:cota_clara/features/bids/bid_configure_screen.dart';
+import 'package:cota_clara/features/bids/bid_history_screen.dart';
 import 'package:cota_clara/features/bids/bid_offer_screen.dart';
 import 'package:cota_clara/features/bids/bid_review_screen.dart';
 import 'package:cota_clara/features/bids/bid_success_screen.dart';
+import 'package:cota_clara/features/bids/models/bid_config.dart';
 import 'package:cota_clara/features/billing/bill_screen.dart';
 import 'package:cota_clara/features/home/home_screen.dart';
 import 'package:cota_clara/features/installments/installments_screen.dart';
@@ -101,12 +104,35 @@ final appRouter = GoRouter(
       builder: (context, state) => const BidOfferScreen(),
     ),
     GoRoute(
+      path: AppRoutes.bidConfigure,
+      builder: (context, state) {
+        final config = state.extra is BidConfig
+            ? state.extra as BidConfig
+            : null;
+        return BidConfigureScreen(initialConfig: config);
+      },
+    ),
+    GoRoute(
       path: AppRoutes.bidReview,
-      builder: (context, state) => const BidReviewScreen(),
+      builder: (context, state) {
+        final config = state.extra is BidConfig
+            ? state.extra as BidConfig
+            : null;
+        return BidReviewScreen(config: config);
+      },
     ),
     GoRoute(
       path: AppRoutes.bidSuccess,
-      builder: (context, state) => const BidSuccessScreen(),
+      builder: (context, state) {
+        final config = state.extra is BidConfig
+            ? state.extra as BidConfig
+            : null;
+        return BidSuccessScreen(config: config);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.myBids,
+      builder: (context, state) => const BidHistoryScreen(),
     ),
   ],
 );

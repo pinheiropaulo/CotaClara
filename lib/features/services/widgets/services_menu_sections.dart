@@ -170,7 +170,7 @@ class QuotaSection extends StatelessWidget {
           icon: Icons.gavel_outlined,
           title: 'Meus lances',
           subtitle: 'Consulte ofertas e resultados',
-          onPressed: () => onShowComingSoon('Meus lances'),
+          onPressed: () => context.push(AppRoutes.myBids),
         ),
       ],
     );
