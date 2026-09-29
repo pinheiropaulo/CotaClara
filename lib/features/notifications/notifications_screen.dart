@@ -1,8 +1,9 @@
 import 'package:cota_clara/app/data/mock_api.dart';
 import 'package:cota_clara/app/theme/app_colors.dart';
 import 'package:cota_clara/features/notifications/models/notification_item.dart';
-import 'package:cota_clara/features/notifications/widgets/notification_card.dart';
 import 'package:cota_clara/features/notifications/widgets/notification_filters_bar.dart';
+import 'package:cota_clara/features/notifications/widgets/notifications_group_list.dart';
+import 'package:cota_clara/features/notifications/widgets/notifications_header_info.dart';
 import 'package:cota_clara/shared/widgets/app_task_top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -52,7 +53,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   void _showComingSoon(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(' será implementado em uma próxima etapa.')),
+      SnackBar(
+        content: Text('$feature será implementado em uma próxima etapa.'),
+      ),
     );
   }
 
@@ -75,7 +78,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
                     children: [
-                      _buildHeaderInfo(),
+                      NotificationsHeaderInfo(
+                        unreadCount: _unreadCount,
+                        onMarkAllAsRead: _markAllAsRead,
+                      ),
                       const SizedBox(height: 24),
                       NotificationFiltersBar(
                         selectedFilter: _selectedFilter,
@@ -83,7 +89,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             setState(() => _selectedFilter = val),
                       ),
                       const SizedBox(height: 24),
-                      ..._buildGroupList(),
+                      NotificationsGroupList(
+                        notifications: _notifications!,
+                        selectedFilter: _selectedFilter,
+                        onShowComingSoon: _showComingSoon,
+                      ),
                       const SizedBox(height: 32),
                       const Center(
                         child: Text(
@@ -113,74 +123,5 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       helpTooltip: 'Marcar todas como lidas',
       trailingIcon: Icons.done_all,
     );
-  }
-
-  Widget _buildHeaderInfo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          '$_unreadCount notificações não lidas',
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        if (_unreadCount > 0)
-          TextButton(
-            onPressed: _markAllAsRead,
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.accentBlue,
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(0, 0),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text(
-              'Marcar como lidas',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-      ],
-    );
-  }
-
-  List<Widget> _buildGroupList() {
-    final List<Widget> widgets = [];
-    for (final group in _notifications!) {
-      final items = group.items.where((item) {
-        if (_selectedFilter == 'Não lidas') {
-          return item.status == NotificationStatus.unread;
-        }
-        return true;
-      }).toList();
-
-      if (items.isNotEmpty) {
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(
-              group.title,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ),
-        );
-
-        for (final item in items) {
-          widgets.add(
-            NotificationCard(
-              item: item,
-              onPressed: () => _showComingSoon('Detalhes da notificação'),
-            ),
-          );
-        }
-      }
-    }
-    return widgets;
   }
 }
